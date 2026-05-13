@@ -2,10 +2,25 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>JRS Smart Cloud Directory</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, shrink-to-fit=no">
+  <title>JRS Cloud — স্মার্ট কন্টাক্ট ডিরেক্টরি</title>
+  <meta name="description" content="JRS Cloud একটি পেশাদার ক্লাউড-ভিত্তিক কন্টাক্ট ম্যানেজমেন্ট সিস্টেম। আপনার গ্রাম, অফিস ও ব্যক্তিগত কন্টাক্ট নিরাপদে সংরক্ষণ ও ব্যবস্থাপনা করুন।">
+  <meta name="keywords" content="কন্টাক্ট ম্যানেজমেন্ট, জেআরএস ক্লাউড, ক্লাউড ডিরেক্টরি, ভিসিএফ ইম্পোর্ট, ফোনবুক, কন্টাক্ট অ্যাপ">
+  <meta name="author" content="Md Jakariya Hasan">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="JRS Cloud Directory">
+  <meta property="og:description" content="নিরাপদ ও স্মার্ট কন্টাক্ট ম্যানেজমেন্ট সিস্টেম">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jakariya41jr.xyz">
+  <meta property="og:image" content="https://jakariya41jr.xyz/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="JRS Cloud Directory">
+  <meta name="twitter:description" content="স্মার্ট কন্টাক্ট ম্যানেজমেন্ট">
   <meta name="theme-color" content="#0f172a">
-  <link rel="manifest" href="data:application/json,{}">
+  <link rel="canonical" href="https://jakariya41jr.xyz">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -14,26 +29,30 @@
           colors: {
             accent: '#6366f1',
             'accent-soft': '#818cf8',
-            surface: 'rgba(15,23,42,0.8)',
           },
           animation: {
             'float': 'float 6s ease-in-out infinite',
             'pulse-soft': 'pulseSoft 2s cubic-bezier(0.4,0,0.6,1) infinite',
-            'slide-up': 'slideUp 0.3s ease-out',
-            'fade-in': 'fadeIn 0.2s ease-out',
+            'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+            'slide-down': 'slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+            'fade-in': 'fadeIn 0.3s ease-out',
+            'scale-in': 'scaleIn 0.25s ease-out',
+            'bounce-gentle': 'bounceGentle 2s infinite',
           },
           keyframes: {
             float: { '0%,100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-10px)' } },
-            pulseSoft: { '0%,100%': { opacity: 1 }, '50%': { opacity: 0.7 } },
-            slideUp: { '0%': { transform: 'translateY(20px)', opacity: 0 }, '100%': { transform: 'translateY(0)', opacity: 1 } },
+            pulseSoft: { '0%,100%': { opacity: 1 }, '50%': { opacity: 0.6 } },
+            slideUp: { '0%': { transform: 'translateY(30px)', opacity: 0 }, '100%': { transform: 'translateY(0)', opacity: 1 } },
+            slideDown: { '0%': { transform: 'translateY(-30px)', opacity: 0 }, '100%': { transform: 'translateY(0)', opacity: 1 } },
             fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+            scaleIn: { '0%': { transform: 'scale(0.9)', opacity: 0 }, '100%': { transform: 'scale(1)', opacity: 1 } },
+            bounceGentle: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } },
           },
         },
       },
-    };
+    }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Hind+Siliguri:wght@400;500;600;700&display=swap');
     * { box-sizing: border-box; }
     body {
       font-family: 'Inter', 'Hind Siliguri', system-ui, sans-serif;
@@ -42,32 +61,57 @@
       min-height: 100vh;
       color: #e2e8f0;
       -webkit-tap-highlight-color: transparent;
+      -webkit-font-smoothing: antialiased;
     }
     .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.12); }
     .glass-card { background: rgba(255,255,255,0.04); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.08); }
     .glass-input { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); color: #f1f5f9; transition: all 0.25s; }
-    .glass-input:focus { outline: none; border-color: #818cf8; box-shadow: 0 0 0 3px rgba(99,102,241,0.25); background: rgba(255,255,255,0.11); }
-    .btn-glass { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #f8fafc; font-weight: 600; transition: all 0.25s; cursor: pointer; user-select: none; }
-    .btn-glass:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); transform: translateY(-1px); box-shadow: 0 8px 25px -8px rgba(0,0,0,0.4); }
+    .glass-input:focus { outline: none; border-color: #818cf8; box-shadow: 0 0 0 3px rgba(99,102,241,0.3); background: rgba(255,255,255,0.11); }
+    .btn-glass {
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #f8fafc;
+      font-weight: 600; transition: all 0.25s; cursor: pointer; user-select: none;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .btn-glass:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); transform: translateY(-2px); box-shadow: 0 10px 25px -8px rgba(0,0,0,0.5); }
     .btn-glass:active { transform: scale(0.97); }
     .btn-primary { background: rgba(99,102,241,0.4); border-color: rgba(129,140,248,0.5); }
-    .btn-primary:hover { background: rgba(99,102,241,0.55); }
+    .btn-primary:hover { background: rgba(99,102,241,0.6); }
     .btn-danger { border-color: rgba(248,113,113,0.4); }
-    .btn-danger:hover { background: rgba(248,113,113,0.2); }
+    .btn-danger:hover { background: rgba(248,113,113,0.25); }
     .btn-success { background: rgba(16,185,129,0.25); border-color: rgba(52,211,153,0.4); }
-    .tag { display: inline-flex; align-items: center; gap: 2px; background: rgba(99,102,241,0.2); border: 1px solid rgba(129,140,248,0.35); border-radius: 999px; padding: 0.15rem 0.7rem; font-size: 0.7rem; font-weight: 500; color: #c7d2fe; }
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
+    .btn-success:hover { background: rgba(16,185,129,0.4); }
+    .tag {
+      display: inline-flex; align-items: center; gap: 2px;
+      background: rgba(99,102,241,0.2); border: 1px solid rgba(129,140,248,0.35);
+      border-radius: 999px; padding: 0.15rem 0.7rem; font-size: 0.7rem; font-weight: 500;
+      color: #c7d2fe;
+    }
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem;
+    }
     .scrollbar-thin::-webkit-scrollbar { width: 4px; }
     .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
     .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
-    .animate-slide-up { animation: slideUp 0.35s ease-out; }
-    .animate-fade-in { animation: fadeIn 0.25s ease-out; }
-    .contact-row { transition: all 0.2s; border-radius: 1rem; }
-    .contact-row:hover { background: rgba(255,255,255,0.05); transform: translateY(-1px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-    .toast { position: fixed; bottom: 6rem; left: 50%; transform: translateX(-50%); z-index: 2000; animation: slideUp 0.4s ease-out; }
-    .bottom-nav { background: rgba(15,23,42,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.1); }
-    @media (min-width: 768px) {
-      .bottom-nav { display: none; }
+    .contact-row { transition: all 0.2s ease; border-radius: 1rem; }
+    .contact-row:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+    .toast {
+      position: fixed; bottom: 6rem; left: 50%; transform: translateX(-50%); z-index: 2000;
+      animation: slideUp 0.4s ease-out; backdrop-filter: blur(20px); background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 1rem; padding: 0.75rem 1.5rem;
+      font-size: 0.9rem; font-weight: 500;
+    }
+    .bottom-nav {
+      background: rgba(15,23,42,0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      border-top: 1px solid rgba(255,255,255,0.1); padding-bottom: env(safe-area-inset-bottom);
+    }
+    @media (min-width: 768px) { .bottom-nav { display: none; } }
+    .progress-bar {
+      height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: linear-gradient(90deg, #6366f1, #818cf8); border-radius: 10px;
+      transition: width 0.3s ease;
     }
   </style>
 </head>
@@ -78,8 +122,8 @@
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
-    import { getFirestore, collection, doc, setDoc, getDocs, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+    import { getFirestore, collection, doc, setDoc, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDbWY8lrAmw0-Ao43SGuFqLt6ulP1Vxr1U",
@@ -95,18 +139,19 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     window.db = db; window.auth = auth;
-    window.Fb = { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, collection, doc, setDoc, getDocs, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy };
+    window.Fb = { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, collection, doc, setDoc, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy, limit };
   </script>
 
   <script type="module">
-    const { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, collection, doc, setDoc, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy } = window.Fb;
+    const { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, collection, doc, setDoc, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy } = window.Fb;
     const db = window.db, auth = window.auth;
     const googleProvider = new GoogleAuthProvider();
 
     const AppState = {
       user: null, contacts: [], categories: [], sections: {},
       selectedCategory: 'All', selectedSection: 'All', searchQuery: '',
-      editingContact: null, viewMode: 'list'
+      editingContact: null, viewMode: 'list',
+      authMode: 'login' // 'login' | 'signup' | 'forgot'
     };
 
     const DEFAULT_CATEGORIES = ['আমাদের গ্রাম', 'অফিস'];
@@ -115,11 +160,12 @@
     const $ = (sel) => document.querySelector(sel);
     const escapeHtml = (t) => !t ? '' : String(t).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m]||m);
     const showToast = (msg, type='info') => {
+      const existing = $('.toast'); if (existing) existing.remove();
       const toast = document.createElement('div');
-      toast.className = `toast glass-card px-5 py-3 text-sm font-medium ${type==='success'?'text-emerald-300 border-emerald-400/30':type==='error'?'text-red-300 border-red-400/30':'text-blue-200 border-blue-400/30'}`;
+      toast.className = `toast ${type==='success'?'text-emerald-300 border-emerald-400/40':type==='error'?'text-red-300 border-red-400/40':'text-blue-200 border-blue-400/40'}`;
       toast.textContent = msg;
       document.body.appendChild(toast);
-      setTimeout(() => { toast.style.opacity='0'; toast.style.transition='opacity 0.3s'; setTimeout(()=>toast.remove(),300); }, 2500);
+      setTimeout(() => { toast.style.opacity='0'; toast.style.transition='opacity 0.3s'; setTimeout(()=>toast.remove(),300); }, 3000);
     };
 
     function renderApp() {
@@ -128,57 +174,116 @@
       else { appEl.innerHTML = DashboardUI(); attachDashboardListeners(); loadUserData(); }
     }
 
-    // ===== AUTH UI =====
+    // ========== AUTH UI (with forms toggle) ==========
     function AuthUI() {
+      const isLogin = AppState.authMode === 'login';
+      const isSignup = AppState.authMode === 'signup';
+      const isForgot = AppState.authMode === 'forgot';
       return `
-        <div class="flex items-center justify-center min-h-screen p-4">
-          <div class="glass w-full max-w-md p-8 space-y-6 animate-slide-up rounded-2xl">
+        <div class="flex items-center justify-center min-h-screen p-4 relative overflow-hidden">
+          <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDE4YzAtMi4yLTEuOC00LTQtNHMtNCAxLjgtNCA0IDEuOCA0IDQgNCA0LTEuOCA0LTR6TTMwIDI4Yy00LjQgMC04IDMuNi04IDh2NEgyMnYtNGMwLTQuNCAzLjYtOCA4LTh6TTEwIDI0YzAtMi4yLTEuOC00LTQtNHMtNCAxLjgtNCA0IDEuOCA0IDQgNCA0LTEuOCA0LTR6TTE2IDI4Yy0yLjIgMC00IDEuOC00IDR2MkgxOHYtMmMwLTIuMi0xLjgtNC00LTR6TTUwIDI0YzAtMi4yLTEuOC00LTQtNHMtNCAxLjgtNCA0IDEuOCA0IDQgNCA0LTEuOCA0LTR6TTU2IDI4Yy0yLjIgMC00IDEuOC00IDR2Mkg1OHYtMmMwLTIuMi0xLjgtNC00LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
+          <div class="glass w-full max-w-md p-8 space-y-6 animate-scale-in rounded-3xl relative z-10">
             <div class="text-center">
-              <div class="text-5xl mb-4 animate-float">☁️</div>
-              <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-300 via-purple-200 to-indigo-300 bg-clip-text text-transparent">JRS Smart Cloud</h1>
-              <p class="text-slate-400 mt-1 text-sm">পেশাদার কন্টাক্ট ম্যানেজমেন্ট</p>
+              <div class="text-5xl mb-3 animate-float inline-block">☁️</div>
+              <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-300 via-purple-200 to-indigo-300 bg-clip-text text-transparent">JRS Cloud</h1>
+              <p class="text-slate-400 text-sm mt-1">পেশাদার কন্টাক্ট ডিরেক্টরি</p>
             </div>
-            <div class="space-y-3">
-              <input type="email" id="auth-email" class="glass-input w-full rounded-xl px-4 py-3" placeholder="ইমেইল">
-              <input type="password" id="auth-password" class="glass-input w-full rounded-xl px-4 py-3" placeholder="পাসওয়ার্ড">
-              <div id="auth-error" class="text-red-400 text-xs hidden bg-red-500/10 p-2 rounded-lg"></div>
-              <button id="btn-login" class="btn-glass btn-primary w-full py-3 rounded-xl">🔐 লগইন</button>
-              <button id="btn-signup" class="btn-glass w-full py-3 rounded-xl bg-purple-500/20 border-purple-400/30 hover:bg-purple-500/30">📝 নতুন অ্যাকাউন্ট</button>
-              <div class="flex items-center gap-3"><div class="h-px flex-1 bg-white/10"></div><span class="text-xs text-slate-500">অথবা</span><div class="h-px flex-1 bg-white/10"></div></div>
-              <button id="btn-google" class="btn-glass w-full py-3 rounded-xl flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10">
-                <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                Google দিয়ে চালিয়ে যান
-              </button>
+            <div id="auth-form-container" class="space-y-4">
+              ${isForgot ? `
+                <div class="animate-slide-down">
+                  <input type="email" id="reset-email" class="glass-input w-full rounded-xl px-4 py-3" placeholder="আপনার ইমেইল">
+                  <button id="btn-reset-password" class="btn-glass btn-primary w-full py-3 rounded-xl mt-3">🔑 পাসওয়ার্ড রিসেট লিংক পাঠান</button>
+                  <button id="btn-back-to-login" class="btn-glass w-full py-3 rounded-xl mt-2">← ফিরে যান</button>
+                  <div id="reset-error" class="text-red-400 text-xs hidden mt-2"></div>
+                  <div id="reset-success" class="text-emerald-400 text-xs hidden mt-2"></div>
+                </div>
+              ` : isSignup ? `
+                <div class="animate-slide-down">
+                  <input type="email" id="signup-email" class="glass-input w-full rounded-xl px-4 py-3" placeholder="ইমেইল">
+                  <input type="password" id="signup-password" class="glass-input w-full rounded-xl px-4 py-3" placeholder="পাসওয়ার্ড">
+                  <input type="password" id="signup-confirm" class="glass-input w-full rounded-xl px-4 py-3" placeholder="পাসওয়ার্ড নিশ্চিত করুন">
+                  <div id="signup-error" class="text-red-400 text-xs hidden"></div>
+                  <button id="btn-signup-submit" class="btn-glass btn-primary w-full py-3 rounded-xl mt-2">📝 অ্যাকাউন্ট খুলুন</button>
+                  <button id="btn-goto-login" class="btn-glass w-full py-3 rounded-xl mt-2">← ইতিমধ্যে অ্যাকাউন্ট আছে? লগইন</button>
+                </div>
+              ` : `
+                <div class="animate-slide-down">
+                  <input type="email" id="login-email" class="glass-input w-full rounded-xl px-4 py-3" placeholder="ইমেইল">
+                  <input type="password" id="login-password" class="glass-input w-full rounded-xl px-4 py-3" placeholder="পাসওয়ার্ড">
+                  <div id="login-error" class="text-red-400 text-xs hidden"></div>
+                  <button id="btn-login-submit" class="btn-glass btn-primary w-full py-3 rounded-xl mt-2">🔐 লগইন</button>
+                  <div class="flex justify-between text-xs mt-2">
+                    <button id="btn-forgot-password" class="text-indigo-300 hover:underline">পাসওয়ার্ড ভুলে গেছেন?</button>
+                    <button id="btn-goto-signup" class="text-purple-300 hover:underline">নতুন অ্যাকাউন্ট খুলুন</button>
+                  </div>
+                  <div class="flex items-center gap-3 mt-4"><div class="h-px flex-1 bg-white/10"></div><span class="text-xs text-slate-500">অথবা</span><div class="h-px flex-1 bg-white/10"></div></div>
+                  <button id="btn-google-login" class="btn-glass w-full py-3 rounded-xl flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 mt-3">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    Google দিয়ে চালিয়ে যান
+                  </button>
+                </div>
+              `}
             </div>
-            <p class="text-[10px] text-slate-600 text-center">🔒 জিরো-নলেজ প্রাইভেসি — আপনার ডেটা শুধুমাত্র আপনার</p>
+            <p class="text-[10px] text-slate-600 text-center">🔒 জিরো-নলেজ প্রাইভেসি — আপনার ডেটা সম্পূর্ণ সুরক্ষিত</p>
           </div>
         </div>`;
     }
 
     function attachAuthListeners() {
-      $('#btn-login').onclick = async () => {
-        try { hideAuthError(); await signInWithEmailAndPassword(auth, $('#auth-email').value, $('#auth-password').value); }
-        catch(e) { showAuthError(e.message.replace('Firebase: ','').replace(/\(auth.*\)/,'')); }
-      };
-      $('#btn-signup').onclick = async () => {
-        try { hideAuthError(); await createUserWithEmailAndPassword(auth, $('#auth-email').value, $('#auth-password').value); }
-        catch(e) { showAuthError(e.message.replace('Firebase: ','').replace(/\(auth.*\)/,'')); }
-      };
-      $('#btn-google').onclick = async () => {
-        try { hideAuthError(); await signInWithPopup(auth, googleProvider); }
-        catch(e) { if(e.code !== 'auth/popup-closed-by-user') showAuthError('Google সাইন-ইন ব্যর্থ হয়েছে'); }
-      };
+      if (AppState.authMode === 'login') {
+        $('#btn-login-submit')?.addEventListener('click', loginWithEmail);
+        $('#btn-google-login')?.addEventListener('click', loginWithGoogle);
+        $('#btn-forgot-password')?.addEventListener('click', ()=> { AppState.authMode='forgot'; renderApp(); });
+        $('#btn-goto-signup')?.addEventListener('click', ()=> { AppState.authMode='signup'; renderApp(); });
+      } else if (AppState.authMode === 'signup') {
+        $('#btn-signup-submit')?.addEventListener('click', signupWithEmail);
+        $('#btn-goto-login')?.addEventListener('click', ()=> { AppState.authMode='login'; renderApp(); });
+      } else if (AppState.authMode === 'forgot') {
+        $('#btn-reset-password')?.addEventListener('click', resetPassword);
+        $('#btn-back-to-login')?.addEventListener('click', ()=> { AppState.authMode='login'; renderApp(); });
+      }
     }
-    function showAuthError(msg) { const el=$('#auth-error'); el.textContent='⚠️ '+msg; el.classList.remove('hidden'); }
-    function hideAuthError() { $('#auth-error')?.classList.add('hidden'); }
 
-    // ===== DASHBOARD UI =====
+    async function loginWithEmail() {
+      const email = $('#login-email').value.trim(), pass = $('#login-password').value;
+      try { await signInWithEmailAndPassword(auth, email, pass); }
+      catch(e) { showAuthError('login-error', e.message.replace('Firebase: ','')); }
+    }
+    async function loginWithGoogle() {
+      try { await signInWithPopup(auth, googleProvider); }
+      catch(e) { if(e.code !== 'auth/popup-closed-by-user') showAuthError('login-error', 'Google সাইন-ইন ব্যর্থ'); }
+    }
+    async function signupWithEmail() {
+      const email = $('#signup-email').value.trim(), pass = $('#signup-password').value, confirm = $('#signup-confirm').value;
+      if (pass !== confirm) { showAuthError('signup-error', 'পাসওয়ার্ড মিলছে না'); return; }
+      try { await createUserWithEmailAndPassword(auth, email, pass); }
+      catch(e) { showAuthError('signup-error', e.message.replace('Firebase: ','')); }
+    }
+    async function resetPassword() {
+      const email = $('#reset-email').value.trim();
+      if (!email) { $('#reset-error').textContent = 'ইমেইল দিন'; $('#reset-error').classList.remove('hidden'); return; }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        $('#reset-success').textContent = '✅ রিসেট লিংক পাঠানো হয়েছে! ইমেইল চেক করুন।';
+        $('#reset-success').classList.remove('hidden');
+        $('#reset-error').classList.add('hidden');
+      } catch(e) {
+        $('#reset-error').textContent = e.message.replace('Firebase: ','');
+        $('#reset-error').classList.remove('hidden');
+        $('#reset-success').classList.add('hidden');
+      }
+    }
+    function showAuthError(id, msg) {
+      const el = $('#'+id); if(el) { el.textContent = '⚠️ '+msg; el.classList.remove('hidden'); }
+    }
+
+    // ========== DASHBOARD UI ==========
     function DashboardUI() {
       const u = AppState.user;
       return `
         <div class="flex flex-col min-h-screen animate-fade-in pb-20 md:pb-8">
           <header class="glass mx-3 mt-3 px-5 py-3 flex items-center justify-between rounded-2xl">
-            <div class="flex items-center gap-2"><span class="text-2xl">☁️</span><h1 class="text-lg sm:text-xl font-bold text-white">JRS Directory</h1></div>
+            <div class="flex items-center gap-2"><span class="text-2xl">☁️</span><h1 class="text-lg sm:text-xl font-bold text-white tracking-tight">JRS Cloud</h1></div>
             <div class="flex items-center gap-2">
               <img src="${u.photoURL || ''}" class="w-8 h-8 rounded-full object-cover ${u.photoURL?'':'hidden'}" onerror="this.style.display='none'" alt="">
               <span class="hidden sm:inline text-sm text-slate-300">${escapeHtml(u.displayName || u.email)}</span>
@@ -187,15 +292,13 @@
             </div>
           </header>
 
-          <!-- Stats Grid -->
           <div class="px-3 mt-3 grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-2xl font-bold" id="stat-total">-</p><p class="text-[10px] text-slate-400">📇 মোট</p></div>
-            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-2xl font-bold" id="stat-village">-</p><p class="text-[10px] text-slate-400">🏘️ গ্রাম</p></div>
-            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-2xl font-bold" id="stat-office">-</p><p class="text-[10px] text-slate-400">🏢 অফিস</p></div>
-            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-2xl font-bold" id="stat-custom">-</p><p class="text-[10px] text-slate-400">🎨 কাস্টম</p></div>
+            <div class="glass-card p-4 rounded-2xl text-center animate-slide-up"><p class="text-2xl font-bold" id="stat-total">-</p><p class="text-[10px] text-slate-400">📇 মোট</p></div>
+            <div class="glass-card p-4 rounded-2xl text-center animate-slide-up" style="animation-delay:0.05s"><p class="text-2xl font-bold" id="stat-village">-</p><p class="text-[10px] text-slate-400">🏘️ গ্রাম</p></div>
+            <div class="glass-card p-4 rounded-2xl text-center animate-slide-up" style="animation-delay:0.1s"><p class="text-2xl font-bold" id="stat-office">-</p><p class="text-[10px] text-slate-400">🏢 অফিস</p></div>
+            <div class="glass-card p-4 rounded-2xl text-center animate-slide-up" style="animation-delay:0.15s"><p class="text-2xl font-bold" id="stat-custom">-</p><p class="text-[10px] text-slate-400">🎨 কাস্টম</p></div>
           </div>
 
-          <!-- Action Buttons -->
           <div class="px-3 mt-3 flex flex-wrap gap-2">
             <button id="btn-add-contact" class="btn-glass btn-primary text-sm px-4 py-2.5 rounded-xl">➕ নতুন</button>
             <button id="btn-import-vcf" class="btn-glass btn-success text-sm px-4 py-2.5 rounded-xl">📥 VCF</button>
@@ -203,7 +306,6 @@
             <button id="btn-toggle-view" class="btn-glass text-sm px-4 py-2.5 rounded-xl ml-auto" title="ভিউ">📋</button>
           </div>
 
-          <!-- Search & Filter -->
           <div class="px-3 mt-3 glass-card p-3 rounded-2xl flex flex-wrap gap-2 items-center">
             <input type="text" id="search-input" class="glass-input flex-1 min-w-[180px] rounded-xl py-2.5 px-4 text-sm" placeholder="🔍 নাম, ট্যাগ বা নম্বর...">
             <select id="filter-category" class="glass-input rounded-xl py-2.5 px-3 text-sm bg-transparent text-white"></select>
@@ -211,15 +313,18 @@
             <button id="btn-clear-search" class="text-xs text-slate-400 hover:text-white px-2" title="ক্লিয়ার">✕</button>
           </div>
 
-          <!-- Contacts Container -->
           <div class="flex-1 px-3 mt-3 pb-2">
             <div id="contacts-container" class="space-y-2 max-h-[50vh] overflow-y-auto scrollbar-thin pr-0.5">
-              <div class="text-center py-10 text-slate-500">কন্টাক্ট লোড হচ্ছে...</div>
+              <div class="text-center py-12 text-slate-500 animate-pulse-soft">কন্টাক্ট লোড হচ্ছে...</div>
             </div>
+          </div>
+
+          <!-- Developer Credit -->
+          <div class="text-center py-3 text-xs text-slate-600">
+            Developed by <a href="https://jakariya41jr.xyz" target="_blank" class="text-indigo-400 hover:underline font-medium">Md Jakariya Hasan</a>
           </div>
         </div>
 
-        <!-- Bottom Navigation (Mobile) -->
         <nav class="bottom-nav fixed bottom-0 left-0 w-full flex justify-around py-3 px-2 z-50 md:hidden">
           <button id="bn-home" class="flex flex-col items-center text-xs text-indigo-300 gap-1"><span class="text-xl">📇</span>হোম</button>
           <button id="bn-categories" class="flex flex-col items-center text-xs text-slate-400 gap-1"><span class="text-xl">📂</span>ক্যাটাগরি</button>
@@ -234,8 +339,8 @@
     function ContactModalUI() {
       return `
         <div id="contact-modal" class="modal-overlay hidden">
-          <div class="glass w-full max-w-lg mx-2 p-5 sm:p-6 max-h-[85vh] overflow-y-auto scrollbar-thin rounded-2xl space-y-4 animate-slide-up">
-            <h2 class="text-lg font-bold" id="modal-title">নতুন কন্টাক্ট</h2>
+          <div class="glass w-full max-w-lg mx-2 p-5 sm:p-6 max-h-[85vh] overflow-y-auto scrollbar-thin rounded-3xl space-y-4 animate-scale-in">
+            <h2 class="text-xl font-bold" id="modal-title">নতুন কন্টাক্ট</h2>
             <input type="text" id="c-name" class="glass-input w-full rounded-xl" placeholder="নাম *">
             <input type="text" id="c-phone" class="glass-input w-full rounded-xl" placeholder="ফোন *">
             <input type="text" id="c-profession" class="glass-input w-full rounded-xl" placeholder="পেশা">
@@ -250,18 +355,19 @@
     function ImportModalUI() {
       return `
         <div id="import-modal" class="modal-overlay hidden">
-          <div class="glass w-full max-w-md mx-2 p-6 rounded-2xl space-y-4 animate-slide-up">
-            <h2 class="text-lg font-bold">📥 VCF ইম্পোর্ট</h2>
+          <div class="glass w-full max-w-md mx-2 p-6 rounded-3xl space-y-4 animate-scale-in">
+            <h2 class="text-xl font-bold">📥 VCF ইম্পোর্ট</h2>
             <input type="file" id="vcf-file" accept=".vcf,.vcard,.txt" class="glass-input w-full rounded-xl file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:bg-indigo-500/40 file:text-white file:text-sm">
             <div id="import-status" class="text-sm text-slate-400"></div>
+            <div id="progress-container" class="progress-bar hidden"><div id="progress-fill" class="progress-fill" style="width:0%"></div></div>
             <div class="flex gap-2"><button id="btn-import-confirm" class="btn-glass btn-success flex-1 py-2.5 rounded-xl">ইম্পোর্ট</button><button id="btn-import-cancel" class="btn-glass flex-1 py-2.5 rounded-xl">বন্ধ</button></div>
           </div></div>`;
     }
     function CategoryManageModalUI() {
       return `
         <div id="cat-modal" class="modal-overlay hidden">
-          <div class="glass w-full max-w-lg mx-2 p-5 sm:p-6 max-h-[80vh] overflow-y-auto scrollbar-thin rounded-2xl space-y-4 animate-slide-up">
-            <h2 class="text-lg font-bold">📂 ক্যাটাগরি ও সেকশন</h2>
+          <div class="glass w-full max-w-lg mx-2 p-5 sm:p-6 max-h-[80vh] overflow-y-auto scrollbar-thin rounded-3xl space-y-4 animate-scale-in">
+            <h2 class="text-xl font-bold">📂 ক্যাটাগরি ও সেকশন</h2>
             <div class="space-y-2" id="cat-list"></div>
             <div class="flex gap-2"><input type="text" id="new-cat-name" class="glass-input flex-1 rounded-xl" placeholder="নতুন ক্যাটাগরি"><button id="btn-add-cat" class="btn-glass btn-primary py-2 px-4 rounded-xl">যোগ</button></div>
             <div class="flex gap-2"><input type="text" id="new-sec-name" class="glass-input flex-1 rounded-xl" placeholder="নতুন সেকশন"><select id="sec-parent-cat" class="glass-input rounded-xl bg-transparent text-white w-40"></select><button id="btn-add-sec" class="btn-glass py-2 px-4 rounded-xl bg-emerald-500/25 border-emerald-400/40">যোগ</button></div>
@@ -270,14 +376,14 @@
           </div></div>`;
     }
 
-    // ===== DASHBOARD LOGIC =====
+    // ========== DASHBOARD LOGIC ==========
     function attachDashboardListeners() {
       $('#btn-logout')?.addEventListener('click', () => signOut(auth));
       $('#btn-add-contact')?.addEventListener('click', () => openContactModal(null));
       $('#btn-cancel-contact')?.addEventListener('click', closeContactModal);
       $('#btn-save-contact')?.addEventListener('click', saveContact);
       $('#btn-import-vcf')?.addEventListener('click', () => $('#import-modal').classList.remove('hidden'));
-      $('#btn-import-cancel')?.addEventListener('click', () => $('#import-modal').classList.add('hidden'));
+      $('#btn-import-cancel')?.addEventListener('click', () => { $('#import-modal').classList.add('hidden'); resetImportProgress(); });
       $('#btn-import-confirm')?.addEventListener('click', handleVCFImport);
       $('#btn-export-csv')?.addEventListener('click', exportCSV);
       $('#btn-manage-cats')?.addEventListener('click', openCategoryModal);
@@ -290,13 +396,10 @@
       $('#filter-category')?.addEventListener('change', (e) => { AppState.selectedCategory = e.target.value; updateFilterSections(); renderContactList(); });
       $('#filter-section')?.addEventListener('change', (e) => { AppState.selectedSection = e.target.value; renderContactList(); });
       $('#c-category')?.addEventListener('change', updateSectionDropdownForForm);
-
-      // Bottom nav
       $('#bn-home')?.addEventListener('click', () => { AppState.selectedCategory='All'; AppState.selectedSection='All'; updateFilterCategoryDropdown(); updateFilterSections(); renderContactList(); });
       $('#bn-categories')?.addEventListener('click', openCategoryModal);
       $('#bn-import')?.addEventListener('click', () => $('#import-modal').classList.remove('hidden'));
       $('#bn-logout')?.addEventListener('click', () => signOut(auth));
-
       updateFilterCategoryDropdown();
       updateFilterSections();
     }
@@ -372,7 +475,6 @@
         if (isGrid) return `<div class="glass-card p-4 rounded-2xl contact-row"><div class="flex justify-between"><span class="font-semibold">${escapeHtml(c.name)}</span><div class="flex gap-1">${actionButtons(c)}</div></div><p class="text-xs text-slate-400 mt-1">📞 ${escapeHtml(c.phone)}</p><p class="text-xs text-slate-500">${c.category||''} ${c.section?'› '+c.section:''}</p><div class="mt-2">${tags}</div></div>`;
         return `<div class="glass-card p-3 sm:p-4 contact-row flex flex-wrap justify-between items-center gap-2 rounded-2xl"><div class="flex-1 min-w-[160px]"><p class="font-semibold text-sm sm:text-base">${escapeHtml(c.name)}</p><p class="text-xs text-slate-400">📞 ${escapeHtml(c.phone)} ${c.profession?'· '+escapeHtml(c.profession):''}</p><p class="text-[10px] text-slate-500">${c.category||''} ${c.section?'› '+c.section:''} ${c.address?'📍 '+escapeHtml(c.address):''}</p><div class="mt-1">${tags}</div></div><div class="flex gap-1 sm:gap-2">${actionButtons(c)}</div></div>`;
       }).join('');
-
       function actionButtons(c) {
         const phoneClean = (c.phone||'').replace(/[^0-9+]/g,'');
         return `<a href="tel:${escapeHtml(c.phone)}" class="btn-glass p-1.5 sm:p-2 text-xs" title="কল">📞</a><a href="https://wa.me/${phoneClean}" target="_blank" class="btn-glass p-1.5 sm:p-2 text-xs bg-green-600/20" title="WhatsApp">💬</a><button data-id="${c.id}" class="btn-edit btn-glass p-1.5 sm:p-2 text-xs">✏️</button><button data-id="${c.id}" class="btn-del btn-glass p-1.5 sm:p-2 text-xs btn-danger">🗑️</button>`;
@@ -408,24 +510,70 @@
       } catch(e) { $('#modal-error').textContent='সেভ ত্রুটি'; $('#modal-error').classList.remove('hidden'); }
     }
 
+    function resetImportProgress() {
+      $('#progress-container').classList.add('hidden');
+      $('#progress-fill').style.width = '0%';
+      $('#import-status').textContent = '';
+    }
+
     async function handleVCFImport() {
       const file = $('#vcf-file').files?.[0];
       if(!file) { $('#import-status').textContent='⚠️ ফাইল সিলেক্ট করুন'; return; }
+      resetImportProgress();
+      $('#progress-container').classList.remove('hidden');
+      $('#import-status').textContent = 'ফাইল পার্স করা হচ্ছে...';
       const text = await file.text();
       const vcards = text.split('END:VCARD').filter(b=>b.trim()).map(b=>b+'END:VCARD');
-      let imported=0; const batch=writeBatch(db); const ref=collection(db,'users',AppState.user.uid,'contacts');
-      for(const vc of vcards) {
-        const nm=vc.match(/FN:(.*)/), tel=vc.match(/TEL[^:]*:(.*)/);
-        if(nm&&tel) { const nd=doc(ref); batch.set(nd,{name:nm[1].trim(),phone:tel[1].trim().replace(/[\s\-\(\)]/g,''),profession:'',address:'',category:AppState.categories[0]||'আমাদের গ্রাম',section:null,tags:[],createdAt:serverTimestamp(),updatedAt:serverTimestamp()}); imported++; }
+      if (vcards.length === 0) { $('#import-status').textContent = '❌ কোন ভিকার্ড নেই'; return; }
+
+      const batchSize = 400; // Firestore batch limit 500
+      const batches = [];
+      let currentBatch = writeBatch(db);
+      let opsInBatch = 0;
+      const ref = collection(db, 'users', AppState.user.uid, 'contacts');
+      let totalImported = 0;
+
+      for (let i = 0; i < vcards.length; i++) {
+        const nm = vcards[i].match(/FN:(.*)/), tel = vcards[i].match(/TEL[^:]*:(.*)/);
+        if (nm && tel) {
+          const nd = doc(ref);
+          currentBatch.set(nd, {
+            name: nm[1].trim(),
+            phone: tel[1].trim().replace(/[\s\-\(\)]/g,''),
+            profession: '', address: '',
+            category: AppState.categories[0] || 'আমাদের গ্রাম',
+            section: null, tags: [],
+            createdAt: serverTimestamp(), updatedAt: serverTimestamp()
+          });
+          opsInBatch++;
+          totalImported++;
+          if (opsInBatch >= batchSize) {
+            batches.push(currentBatch);
+            currentBatch = writeBatch(db);
+            opsInBatch = 0;
+          }
+        }
+        const percent = Math.floor((i+1)/vcards.length*100);
+        $('#progress-fill').style.width = percent+'%';
+        $('#import-status').textContent = `প্রস্তুতি: ${i+1}/${vcards.length}`;
+        await new Promise(r => setTimeout(r, 5)); // allow UI update
       }
-      if(imported>0){ await batch.commit(); $('#import-status').textContent=`✅ ${imported}টি ইম্পোর্ট`; showToast(`${imported} কন্টাক্ট ইম্পোর্ট`,'success'); }
-      else $('#import-status').textContent='❌ কোন কন্টাক্ট নেই';
+      if (opsInBatch > 0) batches.push(currentBatch);
+
+      $('#import-status').textContent = `ডেটাবেজে সেভ হচ্ছে (0/${batches.length})...`;
+      for (let i = 0; i < batches.length; i++) {
+        await batches[i].commit();
+        $('#import-status').textContent = `সেভ হচ্ছে (${i+1}/${batches.length})...`;
+        $('#progress-fill').style.width = Math.floor((i+1)/batches.length*100)+'%';
+      }
+      $('#import-status').textContent = `✅ ${totalImported}টি কন্টাক্ট সফলভাবে ইম্পোর্ট হয়েছে`;
+      showToast(`${totalImported} কন্টাক্ট ইম্পোর্ট সম্পন্ন`,'success');
     }
 
     function exportCSV() {
       let csv='Name,Phone,Profession,Address,Category,Section,Tags\n';
       AppState.contacts.forEach(c=>csv+=`"${c.name}","${c.phone}","${c.profession||''}","${c.address||''}","${c.category||''}","${c.section||''}","${(c.tags||[]).join(';')}"\n`);
-      const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='jrs_contacts.csv'; a.click(); showToast('📤 CSV ডাউনলোড','info');
+      const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='jrs_contacts.csv'; a.click(); showToast('📤 CSV ডাউনলোড শুরু','info');
     }
 
     function toggleView() {
@@ -434,7 +582,6 @@
       renderContactList();
     }
 
-    // ===== Category Management =====
     function openCategoryModal() { populateCatModal(); $('#cat-modal').classList.remove('hidden'); }
     function populateCatModal() {
       const list = $('#cat-list');
