@@ -34,12 +34,6 @@
   </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Hind+Siliguri:wght@400;500;600;700&display=swap');
-    :root {
-      --glass-bg: rgba(255,255,255,0.06);
-      --glass-border: rgba(255,255,255,0.12);
-      --glass-bg-hover: rgba(255,255,255,0.1);
-      --glass-bg-active: rgba(255,255,255,0.15);
-    }
     * { box-sizing: border-box; }
     body {
       font-family: 'Inter', 'Hind Siliguri', system-ui, sans-serif;
@@ -49,7 +43,7 @@
       color: #e2e8f0;
       -webkit-tap-highlight-color: transparent;
     }
-    .glass { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); }
+    .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.12); }
     .glass-card { background: rgba(255,255,255,0.04); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.08); }
     .glass-input { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); color: #f1f5f9; transition: all 0.25s; }
     .glass-input:focus { outline: none; border-color: #818cf8; box-shadow: 0 0 0 3px rgba(99,102,241,0.25); background: rgba(255,255,255,0.11); }
@@ -61,16 +55,8 @@
     .btn-danger { border-color: rgba(248,113,113,0.4); }
     .btn-danger:hover { background: rgba(248,113,113,0.2); }
     .btn-success { background: rgba(16,185,129,0.25); border-color: rgba(52,211,153,0.4); }
-    .tag {
-      display: inline-flex; align-items: center; gap: 2px;
-      background: rgba(99,102,241,0.2); border: 1px solid rgba(129,140,248,0.35);
-      border-radius: 999px; padding: 0.2rem 0.7rem; font-size: 0.7rem; font-weight: 500;
-      color: #c7d2fe; letter-spacing: 0.01em; white-space: nowrap;
-    }
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px);
-      display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem;
-    }
+    .tag { display: inline-flex; align-items: center; gap: 2px; background: rgba(99,102,241,0.2); border: 1px solid rgba(129,140,248,0.35); border-radius: 999px; padding: 0.15rem 0.7rem; font-size: 0.7rem; font-weight: 500; color: #c7d2fe; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
     .scrollbar-thin::-webkit-scrollbar { width: 4px; }
     .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
     .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
@@ -78,12 +64,10 @@
     .animate-fade-in { animation: fadeIn 0.25s ease-out; }
     .contact-row { transition: all 0.2s; border-radius: 1rem; }
     .contact-row:hover { background: rgba(255,255,255,0.05); transform: translateY(-1px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2000; animation: slideUp 0.4s ease-out; }
-    .skeleton { background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 0.75rem; }
-    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-    @media (max-width: 640px) {
-      .glass { border-radius: 1rem; }
-      .btn-glass { padding: 0.55rem 1rem; font-size: 0.85rem; }
+    .toast { position: fixed; bottom: 6rem; left: 50%; transform: translateX(-50%); z-index: 2000; animation: slideUp 0.4s ease-out; }
+    .bottom-nav { background: rgba(15,23,42,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.1); }
+    @media (min-width: 768px) {
+      .bottom-nav { display: none; }
     }
   </style>
 </head>
@@ -91,10 +75,11 @@
 
   <div id="app" class="min-h-screen flex flex-col"></div>
 
+  <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
-    import { getFirestore, collection, doc, setDoc, getDocs, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDocs, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDbWY8lrAmw0-Ao43SGuFqLt6ulP1Vxr1U",
@@ -110,27 +95,24 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     window.db = db; window.auth = auth;
-    window.Fb = { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, collection, doc, setDoc, getDocs, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy, arrayUnion, arrayRemove };
+    window.Fb = { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, collection, doc, setDoc, getDocs, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy };
   </script>
 
   <script type="module">
-    const { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, collection, doc, setDoc, getDocs, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy, arrayUnion, arrayRemove } = window.Fb;
+    const { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, collection, doc, setDoc, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy } = window.Fb;
     const db = window.db, auth = window.auth;
     const googleProvider = new GoogleAuthProvider();
 
     const AppState = {
       user: null, contacts: [], categories: [], sections: {},
       selectedCategory: 'All', selectedSection: 'All', searchQuery: '',
-      editingContact: null, viewMode: 'list', // 'list' | 'grid'
-      toasts: []
+      editingContact: null, viewMode: 'list'
     };
 
     const DEFAULT_CATEGORIES = ['আমাদের গ্রাম', 'অফিস'];
     const DEFAULT_SECTIONS = { 'অফিস': ['কাটিং', 'সেলাই', 'ফিনিশিং', 'প্যাকিং'] };
 
-    // ----- Helpers -----
     const $ = (sel) => document.querySelector(sel);
-    const $$ = (sel) => document.querySelectorAll(sel);
     const escapeHtml = (t) => !t ? '' : String(t).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m]||m);
     const showToast = (msg, type='info') => {
       const toast = document.createElement('div');
@@ -140,14 +122,13 @@
       setTimeout(() => { toast.style.opacity='0'; toast.style.transition='opacity 0.3s'; setTimeout(()=>toast.remove(),300); }, 2500);
     };
 
-    // ----- Render Loop -----
     function renderApp() {
       const appEl = $('#app');
       if (!AppState.user) { appEl.innerHTML = AuthUI(); attachAuthListeners(); }
       else { appEl.innerHTML = DashboardUI(); attachDashboardListeners(); loadUserData(); }
     }
 
-    // ==================== AUTH UI ====================
+    // ===== AUTH UI =====
     function AuthUI() {
       return `
         <div class="flex items-center justify-center min-h-screen p-4">
@@ -191,37 +172,38 @@
     function showAuthError(msg) { const el=$('#auth-error'); el.textContent='⚠️ '+msg; el.classList.remove('hidden'); }
     function hideAuthError() { $('#auth-error')?.classList.add('hidden'); }
 
-    // ==================== DASHBOARD UI ====================
+    // ===== DASHBOARD UI =====
     function DashboardUI() {
       const u = AppState.user;
       return `
-        <div class="flex flex-col min-h-screen animate-fade-in">
-          <header class="glass mx-3 mt-3 px-5 py-3 flex items-center justify-between flex-wrap gap-3 rounded-2xl">
+        <div class="flex flex-col min-h-screen animate-fade-in pb-20 md:pb-8">
+          <header class="glass mx-3 mt-3 px-5 py-3 flex items-center justify-between rounded-2xl">
             <div class="flex items-center gap-2"><span class="text-2xl">☁️</span><h1 class="text-lg sm:text-xl font-bold text-white">JRS Directory</h1></div>
-            <div class="flex items-center gap-2 sm:gap-3">
-              <div class="hidden sm:flex items-center gap-2 text-xs text-slate-400 bg-white/5 rounded-full px-3 py-1.5">
-                <img src="${u.photoURL || ''}" class="w-6 h-6 rounded-full object-cover ${u.photoURL?'':'hidden'}" onerror="this.style.display='none'" alt="">
-                <span>${escapeHtml(u.displayName || u.email)}</span>
-              </div>
-              <button id="btn-manage-cats" class="btn-glass text-xs py-2 px-3" title="ক্যাটাগরি ও সেকশন">📂</button>
-              <button id="btn-logout" class="btn-glass text-xs py-2 px-3 border-red-400/30 hover:bg-red-500/20">🚪</button>
+            <div class="flex items-center gap-2">
+              <img src="${u.photoURL || ''}" class="w-8 h-8 rounded-full object-cover ${u.photoURL?'':'hidden'}" onerror="this.style.display='none'" alt="">
+              <span class="hidden sm:inline text-sm text-slate-300">${escapeHtml(u.displayName || u.email)}</span>
+              <button id="btn-manage-cats" class="btn-glass text-xs py-2 px-3 hidden sm:inline-flex" title="ক্যাটাগরি">📂</button>
+              <button id="btn-logout" class="btn-glass text-xs py-2 px-3 border-red-400/30 hover:bg-red-500/20 hidden sm:inline-flex">🚪</button>
             </div>
           </header>
 
-          <div class="px-3 mt-3 grid grid-cols-2 md:grid-cols-4 gap-3" id="stats-cards">
-            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-2xl font-bold" id="stat-total">-</p><p class="text-[10px] text-slate-400 uppercase tracking-wider">মোট</p></div>
-            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-2xl font-bold" id="stat-village">-</p><p class="text-[10px] text-slate-400 uppercase tracking-wider">গ্রাম</p></div>
-            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-2xl font-bold" id="stat-office">-</p><p class="text-[10px] text-slate-400 uppercase tracking-wider">অফিস</p></div>
-            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-2xl font-bold" id="stat-custom">-</p><p class="text-[10px] text-slate-400 uppercase tracking-wider">কাস্টম</p></div>
+          <!-- Stats Grid -->
+          <div class="px-3 mt-3 grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-2xl font-bold" id="stat-total">-</p><p class="text-[10px] text-slate-400">📇 মোট</p></div>
+            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-2xl font-bold" id="stat-village">-</p><p class="text-[10px] text-slate-400">🏘️ গ্রাম</p></div>
+            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-2xl font-bold" id="stat-office">-</p><p class="text-[10px] text-slate-400">🏢 অফিস</p></div>
+            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-2xl font-bold" id="stat-custom">-</p><p class="text-[10px] text-slate-400">🎨 কাস্টম</p></div>
           </div>
 
+          <!-- Action Buttons -->
           <div class="px-3 mt-3 flex flex-wrap gap-2">
             <button id="btn-add-contact" class="btn-glass btn-primary text-sm px-4 py-2.5 rounded-xl">➕ নতুন</button>
-            <button id="btn-import-vcf" class="btn-glass btn-success text-sm px-4 py-2.5 rounded-xl">📥 VCF ইম্পোর্ট</button>
+            <button id="btn-import-vcf" class="btn-glass btn-success text-sm px-4 py-2.5 rounded-xl">📥 VCF</button>
             <button id="btn-export-csv" class="btn-glass text-sm px-4 py-2.5 rounded-xl bg-amber-500/15 border-amber-400/30">📤 CSV</button>
-            <button id="btn-toggle-view" class="btn-glass text-sm px-4 py-2.5 rounded-xl ml-auto" title="ভিউ পরিবর্তন">📋</button>
+            <button id="btn-toggle-view" class="btn-glass text-sm px-4 py-2.5 rounded-xl ml-auto" title="ভিউ">📋</button>
           </div>
 
+          <!-- Search & Filter -->
           <div class="px-3 mt-3 glass-card p-3 rounded-2xl flex flex-wrap gap-2 items-center">
             <input type="text" id="search-input" class="glass-input flex-1 min-w-[180px] rounded-xl py-2.5 px-4 text-sm" placeholder="🔍 নাম, ট্যাগ বা নম্বর...">
             <select id="filter-category" class="glass-input rounded-xl py-2.5 px-3 text-sm bg-transparent text-white"></select>
@@ -229,12 +211,22 @@
             <button id="btn-clear-search" class="text-xs text-slate-400 hover:text-white px-2" title="ক্লিয়ার">✕</button>
           </div>
 
-          <div class="flex-1 px-3 mt-3 pb-24">
-            <div id="contacts-container" class="space-y-2 max-h-[55vh] overflow-y-auto scrollbar-thin pr-0.5">
-              <div class="text-center py-10 text-slate-500"><div class="skeleton h-16 w-full mb-2"></div><div class="skeleton h-16 w-3/4 mx-auto mb-2"></div><div class="skeleton h-16 w-5/6 mx-auto"></div></div>
+          <!-- Contacts Container -->
+          <div class="flex-1 px-3 mt-3 pb-2">
+            <div id="contacts-container" class="space-y-2 max-h-[50vh] overflow-y-auto scrollbar-thin pr-0.5">
+              <div class="text-center py-10 text-slate-500">কন্টাক্ট লোড হচ্ছে...</div>
             </div>
           </div>
         </div>
+
+        <!-- Bottom Navigation (Mobile) -->
+        <nav class="bottom-nav fixed bottom-0 left-0 w-full flex justify-around py-3 px-2 z-50 md:hidden">
+          <button id="bn-home" class="flex flex-col items-center text-xs text-indigo-300 gap-1"><span class="text-xl">📇</span>হোম</button>
+          <button id="bn-categories" class="flex flex-col items-center text-xs text-slate-400 gap-1"><span class="text-xl">📂</span>ক্যাটাগরি</button>
+          <button id="bn-import" class="flex flex-col items-center text-xs text-slate-400 gap-1"><span class="text-xl">📥</span>ইম্পোর্ট</button>
+          <button id="bn-logout" class="flex flex-col items-center text-xs text-slate-400 gap-1"><span class="text-xl">🚪</span>লগআউট</button>
+        </nav>
+
         ${ContactModalUI()} ${ImportModalUI()} ${CategoryManageModalUI()}
         <div id="toast-container"></div>`;
     }
@@ -269,44 +261,49 @@
       return `
         <div id="cat-modal" class="modal-overlay hidden">
           <div class="glass w-full max-w-lg mx-2 p-5 sm:p-6 max-h-[80vh] overflow-y-auto scrollbar-thin rounded-2xl space-y-4 animate-slide-up">
-            <h2 class="text-lg font-bold">📂 ক্যাটাগরি ও সেকশন ম্যানেজমেন্ট</h2>
+            <h2 class="text-lg font-bold">📂 ক্যাটাগরি ও সেকশন</h2>
             <div class="space-y-2" id="cat-list"></div>
-            <div class="flex gap-2"><input type="text" id="new-cat-name" class="glass-input flex-1 rounded-xl" placeholder="নতুন ক্যাটাগরি"><button id="btn-add-cat" class="btn-glass btn-primary py-2 px-4 rounded-xl">যোগ করুন</button></div>
+            <div class="flex gap-2"><input type="text" id="new-cat-name" class="glass-input flex-1 rounded-xl" placeholder="নতুন ক্যাটাগরি"><button id="btn-add-cat" class="btn-glass btn-primary py-2 px-4 rounded-xl">যোগ</button></div>
             <div class="flex gap-2"><input type="text" id="new-sec-name" class="glass-input flex-1 rounded-xl" placeholder="নতুন সেকশন"><select id="sec-parent-cat" class="glass-input rounded-xl bg-transparent text-white w-40"></select><button id="btn-add-sec" class="btn-glass py-2 px-4 rounded-xl bg-emerald-500/25 border-emerald-400/40">যোগ</button></div>
             <button id="btn-close-cats" class="btn-glass w-full py-2.5 rounded-xl">সম্পন্ন</button>
             <div id="cat-error" class="text-red-400 text-xs hidden"></div>
           </div></div>`;
     }
 
-    // ==================== DASHBOARD LOGIC ====================
+    // ===== DASHBOARD LOGIC =====
     function attachDashboardListeners() {
-      $('#btn-logout').onclick = () => signOut(auth);
-      $('#btn-add-contact').onclick = () => openContactModal(null);
-      $('#btn-cancel-contact').onclick = closeContactModal;
-      $('#btn-save-contact').onclick = saveContact;
-      $('#btn-import-vcf').onclick = () => $('#import-modal').classList.remove('hidden');
-      $('#btn-import-cancel').onclick = () => $('#import-modal').classList.add('hidden');
-      $('#btn-import-confirm').onclick = handleVCFImport;
-      $('#btn-export-csv').onclick = exportCSV;
-      $('#btn-manage-cats').onclick = openCategoryModal;
-      $('#btn-close-cats').onclick = () => $('#cat-modal').classList.add('hidden');
-      $('#btn-add-cat').onclick = addCategory;
-      $('#btn-add-sec').onclick = addSection;
-      $('#btn-toggle-view').onclick = toggleView;
-      $('#btn-clear-search').onclick = () => { $('#search-input').value=''; AppState.searchQuery=''; renderContactList(); };
+      $('#btn-logout')?.addEventListener('click', () => signOut(auth));
+      $('#btn-add-contact')?.addEventListener('click', () => openContactModal(null));
+      $('#btn-cancel-contact')?.addEventListener('click', closeContactModal);
+      $('#btn-save-contact')?.addEventListener('click', saveContact);
+      $('#btn-import-vcf')?.addEventListener('click', () => $('#import-modal').classList.remove('hidden'));
+      $('#btn-import-cancel')?.addEventListener('click', () => $('#import-modal').classList.add('hidden'));
+      $('#btn-import-confirm')?.addEventListener('click', handleVCFImport);
+      $('#btn-export-csv')?.addEventListener('click', exportCSV);
+      $('#btn-manage-cats')?.addEventListener('click', openCategoryModal);
+      $('#btn-close-cats')?.addEventListener('click', () => $('#cat-modal').classList.add('hidden'));
+      $('#btn-add-cat')?.addEventListener('click', addCategory);
+      $('#btn-add-sec')?.addEventListener('click', addSection);
+      $('#btn-toggle-view')?.addEventListener('click', toggleView);
+      $('#btn-clear-search')?.addEventListener('click', () => { $('#search-input').value=''; AppState.searchQuery=''; renderContactList(); });
+      $('#search-input')?.addEventListener('input', (e) => { AppState.searchQuery = e.target.value.toLowerCase(); renderContactList(); });
+      $('#filter-category')?.addEventListener('change', (e) => { AppState.selectedCategory = e.target.value; updateFilterSections(); renderContactList(); });
+      $('#filter-section')?.addEventListener('change', (e) => { AppState.selectedSection = e.target.value; renderContactList(); });
+      $('#c-category')?.addEventListener('change', updateSectionDropdownForForm);
 
-      $('#search-input').oninput = (e) => { AppState.searchQuery = e.target.value.toLowerCase(); renderContactList(); };
-      $('#filter-category').onchange = (e) => { AppState.selectedCategory = e.target.value; updateFilterSections(); renderContactList(); };
-      $('#filter-section').onchange = (e) => { AppState.selectedSection = e.target.value; renderContactList(); };
-      $('#c-category').onchange = updateSectionDropdownForForm;
+      // Bottom nav
+      $('#bn-home')?.addEventListener('click', () => { AppState.selectedCategory='All'; AppState.selectedSection='All'; updateFilterCategoryDropdown(); updateFilterSections(); renderContactList(); });
+      $('#bn-categories')?.addEventListener('click', openCategoryModal);
+      $('#bn-import')?.addEventListener('click', () => $('#import-modal').classList.remove('hidden'));
+      $('#bn-logout')?.addEventListener('click', () => signOut(auth));
 
       updateFilterCategoryDropdown();
       updateFilterSections();
     }
 
     function loadUserData() {
-      const userDocRef = doc(db, 'users', AppState.user.uid);
-      onSnapshot(userDocRef, (snap) => {
+      const userRef = doc(db, 'users', AppState.user.uid);
+      onSnapshot(userRef, (snap) => {
         if (snap.exists()) {
           const d = snap.data();
           AppState.categories = d.categories || [...DEFAULT_CATEGORIES];
@@ -314,15 +311,15 @@
         } else {
           AppState.categories = [...DEFAULT_CATEGORIES];
           AppState.sections = {...DEFAULT_SECTIONS};
-          setDoc(userDocRef, { categories: AppState.categories, sections: AppState.sections, email: AppState.user.email, updatedAt: serverTimestamp() }, {merge:true});
+          setDoc(userRef, { categories: AppState.categories, sections: AppState.sections, email: AppState.user.email, updatedAt: serverTimestamp() }, {merge:true});
         }
         updateFilterCategoryDropdown();
         updateFilterSections();
         updateSectionDropdownForForm();
         populateCatModal();
       });
-      const qContacts = query(collection(db, 'users', AppState.user.uid, 'contacts'), orderBy('createdAt','desc'));
-      onSnapshot(qContacts, (snap) => {
+      const q = query(collection(db, 'users', AppState.user.uid, 'contacts'), orderBy('createdAt','desc'));
+      onSnapshot(q, (snap) => {
         AppState.contacts = []; snap.forEach(d=>AppState.contacts.push({id:d.id,...d.data()}));
         renderContactList(); updateStats();
       });
@@ -340,12 +337,12 @@
 
     function updateFilterCategoryDropdown() {
       const sel = $('#filter-category');
-      sel.innerHTML = '<option value="All">🗂️ সকল ক্যাটাগরি</option>';
+      sel.innerHTML = '<option value="All">🗂️ সকল</option>';
       AppState.categories.forEach(cat => sel.innerHTML += `<option value="${cat}">${cat}</option>`);
     }
     function updateFilterSections() {
       const sel = $('#filter-section');
-      sel.innerHTML = '<option value="All">📁 সকল সেকশন</option>';
+      sel.innerHTML = '<option value="All">📁 সকল</option>';
       if (AppState.selectedCategory!=='All') (AppState.sections[AppState.selectedCategory]||[]).forEach(s=>sel.innerHTML+=`<option value="${s}">${s}</option>`);
     }
     function updateSectionDropdownForForm() {
@@ -365,16 +362,17 @@
         list = list.filter(c => (c.name||''+c.phone||''+c.profession||''+(c.tags||[]).join(' ')).toLowerCase().includes(q));
       }
       if (!list.length) {
-        container.innerHTML = `<div class="text-center py-14 text-slate-500"><span class="text-4xl block mb-3">📇</span>কোন কন্টাক্ট পাওয়া যায়নি</div>`;
+        container.innerHTML = `<div class="text-center py-14 text-slate-500"><span class="text-4xl block mb-3">📇</span>কোন কন্টাক্ট নেই</div>`;
         return;
       }
       const isGrid = AppState.viewMode === 'grid';
-      container.className = isGrid ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[55vh] overflow-y-auto scrollbar-thin pr-0.5' : 'space-y-2 max-h-[55vh] overflow-y-auto scrollbar-thin pr-0.5';
+      container.className = isGrid ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[50vh] overflow-y-auto scrollbar-thin pr-0.5' : 'space-y-2 max-h-[50vh] overflow-y-auto scrollbar-thin pr-0.5';
       container.innerHTML = list.map(c => {
         const tags = (c.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('');
         if (isGrid) return `<div class="glass-card p-4 rounded-2xl contact-row"><div class="flex justify-between"><span class="font-semibold">${escapeHtml(c.name)}</span><div class="flex gap-1">${actionButtons(c)}</div></div><p class="text-xs text-slate-400 mt-1">📞 ${escapeHtml(c.phone)}</p><p class="text-xs text-slate-500">${c.category||''} ${c.section?'› '+c.section:''}</p><div class="mt-2">${tags}</div></div>`;
         return `<div class="glass-card p-3 sm:p-4 contact-row flex flex-wrap justify-between items-center gap-2 rounded-2xl"><div class="flex-1 min-w-[160px]"><p class="font-semibold text-sm sm:text-base">${escapeHtml(c.name)}</p><p class="text-xs text-slate-400">📞 ${escapeHtml(c.phone)} ${c.profession?'· '+escapeHtml(c.profession):''}</p><p class="text-[10px] text-slate-500">${c.category||''} ${c.section?'› '+c.section:''} ${c.address?'📍 '+escapeHtml(c.address):''}</p><div class="mt-1">${tags}</div></div><div class="flex gap-1 sm:gap-2">${actionButtons(c)}</div></div>`;
       }).join('');
+
       function actionButtons(c) {
         const phoneClean = (c.phone||'').replace(/[^0-9+]/g,'');
         return `<a href="tel:${escapeHtml(c.phone)}" class="btn-glass p-1.5 sm:p-2 text-xs" title="কল">📞</a><a href="https://wa.me/${phoneClean}" target="_blank" class="btn-glass p-1.5 sm:p-2 text-xs bg-green-600/20" title="WhatsApp">💬</a><button data-id="${c.id}" class="btn-edit btn-glass p-1.5 sm:p-2 text-xs">✏️</button><button data-id="${c.id}" class="btn-del btn-glass p-1.5 sm:p-2 text-xs btn-danger">🗑️</button>`;
@@ -387,13 +385,12 @@
       AppState.editingContact = contact;
       $('#contact-modal').classList.remove('hidden');
       $('#modal-title').textContent = contact ? '✏️ কন্টাক্ট এডিট' : '➕ নতুন কন্টাক্ট';
-      const catSel = $('#c-category');
-      catSel.innerHTML = AppState.categories.map(c=>`<option value="${c}">${c}</option>`).join('');
+      $('#c-category').innerHTML = AppState.categories.map(c=>`<option value="${c}">${c}</option>`).join('');
       $('#c-name').value = contact?.name || '';
       $('#c-phone').value = contact?.phone || '';
       $('#c-profession').value = contact?.profession || '';
       $('#c-address').value = contact?.address || '';
-      catSel.value = contact?.category || AppState.categories[0] || '';
+      $('#c-category').value = contact?.category || AppState.categories[0] || '';
       updateSectionDropdownForForm();
       $('#c-section').value = contact?.section || '';
       $('#c-tags').value = (contact?.tags||[]).join(', ');
@@ -421,23 +418,23 @@
         const nm=vc.match(/FN:(.*)/), tel=vc.match(/TEL[^:]*:(.*)/);
         if(nm&&tel) { const nd=doc(ref); batch.set(nd,{name:nm[1].trim(),phone:tel[1].trim().replace(/[\s\-\(\)]/g,''),profession:'',address:'',category:AppState.categories[0]||'আমাদের গ্রাম',section:null,tags:[],createdAt:serverTimestamp(),updatedAt:serverTimestamp()}); imported++; }
       }
-      if(imported>0){ await batch.commit(); $('#import-status').textContent=`✅ ${imported}টি ইম্পোর্ট হয়েছে`; showToast(`${imported} কন্টাক্ট ইম্পোর্ট`,'success'); }
-      else $('#import-status').textContent='❌ কোন কন্টাক্ট পাওয়া যায়নি';
+      if(imported>0){ await batch.commit(); $('#import-status').textContent=`✅ ${imported}টি ইম্পোর্ট`; showToast(`${imported} কন্টাক্ট ইম্পোর্ট`,'success'); }
+      else $('#import-status').textContent='❌ কোন কন্টাক্ট নেই';
     }
 
     function exportCSV() {
       let csv='Name,Phone,Profession,Address,Category,Section,Tags\n';
       AppState.contacts.forEach(c=>csv+=`"${c.name}","${c.phone}","${c.profession||''}","${c.address||''}","${c.category||''}","${c.section||''}","${(c.tags||[]).join(';')}"\n`);
-      const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='jrs_contacts.csv'; a.click(); showToast('📤 CSV ডাউনলোড শুরু','info');
+      const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='jrs_contacts.csv'; a.click(); showToast('📤 CSV ডাউনলোড','info');
     }
 
     function toggleView() {
       AppState.viewMode = AppState.viewMode==='list'?'grid':'list';
-      $('#btn-toggle-view').textContent = AppState.viewMode==='grid'?'📋':'� grids';
+      $('#btn-toggle-view').textContent = AppState.viewMode==='grid'?'📋':'🗂️';
       renderContactList();
     }
 
-    // ----- Category Management -----
+    // ===== Category Management =====
     function openCategoryModal() { populateCatModal(); $('#cat-modal').classList.remove('hidden'); }
     function populateCatModal() {
       const list = $('#cat-list');
@@ -446,19 +443,19 @@
           <div><span class="font-medium">📁 ${escapeHtml(cat)}</span><div class="flex flex-wrap gap-1 mt-1">${(AppState.sections[cat]||[]).map(s=>`<span class="text-xs bg-white/10 px-2 py-0.5 rounded-full flex items-center gap-1">${escapeHtml(s)}<button class="text-red-400 hover:text-red-300 ml-0.5 del-sec" data-cat="${escapeHtml(cat)}" data-sec="${escapeHtml(s)}">×</button></span>`).join('')}</div></div>
           <button class="btn-glass btn-danger text-xs px-3 py-1 del-cat" data-cat="${escapeHtml(cat)}">🗑️</button>
         </div>`).join('');
-      list.querySelectorAll('.del-cat').forEach(b=>b.onclick=async(e)=>{ const cat=e.currentTarget.dataset.cat; if(confirm(`"${cat}" ও এর সকল সেকশন ডিলিট করবেন?`)) { AppState.categories=AppState.categories.filter(c=>c!==cat); delete AppState.sections[cat]; await saveCats(); populateCatModal(); showToast('ক্যাটাগরি ডিলিট হয়েছে','info'); } });
+      list.querySelectorAll('.del-cat').forEach(b=>b.onclick=async(e)=>{ const cat=e.currentTarget.dataset.cat; if(confirm(`"${cat}" মুছবেন?`)) { AppState.categories=AppState.categories.filter(c=>c!==cat); delete AppState.sections[cat]; await saveCats(); populateCatModal(); showToast('ক্যাটাগরি ডিলিট','info'); } });
       list.querySelectorAll('.del-sec').forEach(b=>b.onclick=async(e)=>{ const{cat,sec}=e.currentTarget.dataset; AppState.sections[cat]=(AppState.sections[cat]||[]).filter(s=>s!==sec); await saveCats(); populateCatModal(); });
-      const secPar = $('#sec-parent-cat'); secPar.innerHTML = AppState.categories.map(c=>`<option value="${c}">${c}</option>`).join('');
+      $('#sec-parent-cat').innerHTML = AppState.categories.map(c=>`<option value="${c}">${c}</option>`).join('');
     }
     async function addCategory() {
       const name = $('#new-cat-name').value.trim();
-      if(!name) return showCatError('নাম দিন'); if(AppState.categories.includes(name)) return showCatError('ইতিমধ্যে আছে');
-      AppState.categories.push(name); AppState.sections[name]=[]; await saveCats(); $('#new-cat-name').value=''; populateCatModal(); updateFilterCategoryDropdown(); showToast('✅ ক্যাটাগরি যোগ হয়েছে','success');
+      if(!name) return showCatError('নাম দিন'); if(AppState.categories.includes(name)) return showCatError('আগে থেকেই আছে');
+      AppState.categories.push(name); AppState.sections[name]=[]; await saveCats(); $('#new-cat-name').value=''; populateCatModal(); updateFilterCategoryDropdown(); showToast('✅ ক্যাটাগরি যোগ','success');
     }
     async function addSection() {
       const name = $('#new-sec-name').value.trim(), cat = $('#sec-parent-cat').value;
-      if(!name) return showCatError('সেকশনের নাম দিন'); if((AppState.sections[cat]||[]).includes(name)) return showCatError('ইতিমধ্যে আছে');
-      AppState.sections[cat] = [...(AppState.sections[cat]||[]), name]; await saveCats(); $('#new-sec-name').value=''; populateCatModal(); updateFilterSections(); showToast('✅ সেকশন যোগ হয়েছে','success');
+      if(!name) return showCatError('সেকশনের নাম দিন'); if((AppState.sections[cat]||[]).includes(name)) return showCatError('আগে থেকেই আছে');
+      AppState.sections[cat] = [...(AppState.sections[cat]||[]), name]; await saveCats(); $('#new-sec-name').value=''; populateCatModal(); updateFilterSections(); showToast('✅ সেকশন যোগ','success');
     }
     function showCatError(m) { const e=$('#cat-error'); e.textContent=m; e.classList.remove('hidden'); setTimeout(()=>e.classList.add('hidden'),2000); }
     async function saveCats() {
