@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JRS Cloud - User Dashboard</title>
+    <style>
+        :root { --primary-color: #2563eb; --bg-color: #f3f4f6; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 50px auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        .hidden { display: none; }
+        
+        /* Auth Buttons */
+        .btn { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        .btn-google { background-color: #db4437; color: white; }
+        .btn-logout { background-color: #6b7280; color: white; }
+        .btn-save { background-color: var(--primary-color); color: white; }
+
+        /* Input Styles */
+        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .data-list { margin-top: 20px; border-top: 2px solid #eee; padding-top: 10px; }
+        .data-item { background: #f9fafb; padding: 10px; margin-bottom: 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e5e7eb; }
+        .delete-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>JRS Cloud</h2>
+
+    <div id="login-section">
+        <p style="text-align:center;">আপনার অ্যাকাউন্ট ম্যানেজ করতে লগ-ইন করুন</p>
+        <button class="btn btn-google" id="google-login">Login with Google</button>
+    </div>
+
+    <div id="dashboard-section" class="hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <p id="user-info">স্বাগতম!</p>
+            <button class="btn btn-logout" id="logout-btn" style="width: auto; padding: 5px 15px;">Logout</button>
+        </div>
+
+        <hr>
+
+        <h4>নতুন ডাটা যুক্ত করুন</h4>
+        <input type="text" id="data-name" placeholder="নাম বা নাম্বার লিখুন">
+        <input type="text" id="data-session" placeholder="সেশন (যেমন: ২০২৪)">
+        <button class="btn btn-save" id="save-data">ডেটা সেভ করুন</button>
+
+        <div class="data-list" id="data-display">
+            <h4>আপনার সেভ করা লিস্ট:</h4>
+            </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, deleteDoc, doc, serverTimestamp, orderBy } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+    // আপনার দেওয়া Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDbWY8lrAmw0-Ao43SGuFqLt6ulP1Vxr1U",
+        authDomain: "jrs-cloud-476ef.firebaseapp.com",
+        projectId: "jrs-cloud-476ef",
+        storageBucket: "jrs-cloud-476ef.firebasestorage.app",
+        messagingSenderId: "322592273401",
+        appId: "1:322592273401:web:5661912525d04281380328",
+        measurementId: "G-SGNXLEHEWD"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    const loginSection = document.getElementById('login-section');
+    const dashboardSection = document.getElementById('dashboard-section');
+    const userInfo = document.getElementById('user-info');
+    const dataDisplay = document.getElementById('data-display');
+
+    // --- Authentication Logic ---
+
+    // Google Login
+    document.getElementById('google-login').onclick = () => {
+        signInWithPopup(auth, provider).catch(error => console.error(error));
+    };
+
+    // Logout
+    document.getElementById('logout-btn').onclick = () => {
+        signOut(auth);
+    };
+
+    // Auth State Observer
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            loginSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+            userInfo.innerText = `হ্যালো, ${user.displayName}`;
+            loadData(user.uid);
+        } else {
+            loginSection.classList.remove('hidden');
+            dashboardSection.classList.add('hidden');
+        }
+    });
+
+    // --- Firestore Data Logic ---
+
+    // Save Data
+    document.getElementById('save-data').onclick = async () => {
+        const name = document.getElementById('data-name').value;
+        const session = document.getElementById('data-session').value;
+        const user = auth.currentUser;
+
+        if (name && session && user) {
+            try {
+                await addDoc(collection(db, "users", user.uid, "user_data"), {
+                    name: name,
+                    session: session,
+                    createdAt: serverTimestamp()
+                });
+                document.getElementById('data-name').value = '';
+                document.getElementById('data-session').value = '';
+            } catch (e) {
+                alert("ডেটা সেভ করতে সমস্যা হয়েছে!");
+            }
+        } else {
+            alert("সবগুলো ঘর পূরণ করুন।");
+        }
+    };
+
+    // Load Data
+    function loadData(uid) {
+        const q = query(collection(db, "users", uid, "user_data"), orderBy("createdAt", "desc"));
+        onSnapshot(q, (snapshot) => {
+            dataDisplay.innerHTML = '<h4>আপনার সেভ করা লিস্ট:</h4>';
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const div = document.createElement('div');
+                div.className = 'data-item';
+                div.innerHTML = `
+                    <span><strong>${data.name}</strong> (${data.session})</span>
+                    <button class="delete-btn" onclick="deleteEntry('${uid}', '${docSnap.id}')">Delete</button>
+                `;
+                dataDisplay.appendChild(div);
+            });
+        });
+    }
+
+    // Delete Data (Global scope for button access)
+    window.deleteEntry = async (uid, docId) => {
+        if(confirm("আপনি কি এটি ডিলিট করতে চান?")) {
+            await deleteDoc(doc(db, "users", uid, "user_data", docId));
+        }
+    };
+
+</script>
+
+</body>
+</html>
