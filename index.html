@@ -1,161 +1,656 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JRS Cloud - User Dashboard</title>
-    <style>
-        :root { --primary-color: #2563eb; --bg-color: #f3f4f6; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; }
-        .container { max-width: 600px; margin: 50px auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #333; }
-        .hidden { display: none; }
-        
-        /* Auth Buttons */
-        .btn { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; }
-        .btn-google { background-color: #db4437; color: white; }
-        .btn-logout { background-color: #6b7280; color: white; }
-        .btn-save { background-color: var(--primary-color); color: white; }
-
-        /* Input Styles */
-        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        .data-list { margin-top: 20px; border-top: 2px solid #eee; padding-top: 10px; }
-        .data-item { background: #f9fafb; padding: 10px; margin-bottom: 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e5e7eb; }
-        .delete-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>JRS Cloud Directory</title>
+  <!-- Tailwind via CDN + Glass UI -->
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            glass: 'rgba(255,255,255,0.25)',
+            glassBorder: 'rgba(255,255,255,0.4)',
+            accent: '#4f46e5',
+            accentHover: '#6366f1',
+            darkBg: '#0f172a',
+            darkCard: 'rgba(30,41,59,0.7)',
+          },
+          backdropBlur: {
+            xs: '2px',
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      min-height: 100vh;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 1.5rem;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1.25rem;
+    }
+    .glass-input {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 0.75rem;
+      color: white;
+      padding: 0.75rem 1rem;
+    }
+    .glass-input:focus {
+      outline: none;
+      border-color: #818cf8;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.3);
+    }
+    .btn-glass {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 0.75rem;
+      color: white;
+      font-weight: 600;
+      padding: 0.6rem 1.2rem;
+      transition: all 0.2s;
+    }
+    .btn-glass:hover {
+      background: rgba(255,255,255,0.25);
+      border-color: rgba(255,255,255,0.5);
+      transform: translateY(-1px);
+    }
+    .tag {
+      display: inline-block;
+      background: rgba(99,102,241,0.25);
+      border: 1px solid rgba(129,140,248,0.5);
+      border-radius: 2rem;
+      padding: 0.2rem 0.75rem;
+      font-size: 0.75rem;
+      color: #c7d2fe;
+      margin: 0.15rem;
+    }
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 5px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.25);
+      border-radius: 10px;
+    }
+    .contact-row {
+      transition: background 0.2s;
+    }
+    .contact-row:hover {
+      background: rgba(255,255,255,0.05);
+    }
+    @media (max-width: 640px) {
+      .glass {
+        border-radius: 1rem;
+      }
+    }
+  </style>
 </head>
-<body>
+<body class="text-slate-100 antialiased">
 
-<div class="container">
-    <h2>JRS Cloud</h2>
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+    import { getFirestore, collection, doc, setDoc, getDocs, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-    <div id="login-section">
-        <p style="text-align:center;">আপনার অ্যাকাউন্ট ম্যানেজ করতে লগ-ইন করুন</p>
-        <button class="btn btn-google" id="google-login">Login with Google</button>
-    </div>
-
-    <div id="dashboard-section" class="hidden">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <p id="user-info">স্বাগতম!</p>
-            <button class="btn btn-logout" id="logout-btn" style="width: auto; padding: 5px 15px;">Logout</button>
-        </div>
-
-        <hr>
-
-        <h4>নতুন ডাটা যুক্ত করুন</h4>
-        <input type="text" id="data-name" placeholder="নাম বা নাম্বার লিখুন">
-        <input type="text" id="data-session" placeholder="সেশন (যেমন: ২০২৪)">
-        <button class="btn btn-save" id="save-data">ডেটা সেভ করুন</button>
-
-        <div class="data-list" id="data-display">
-            <h4>আপনার সেভ করা লিস্ট:</h4>
-            </div>
-    </div>
-</div>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, deleteDoc, doc, serverTimestamp, orderBy } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-
-    // আপনার দেওয়া Firebase configuration
     const firebaseConfig = {
-        apiKey: "AIzaSyDbWY8lrAmw0-Ao43SGuFqLt6ulP1Vxr1U",
-        authDomain: "jrs-cloud-476ef.firebaseapp.com",
-        projectId: "jrs-cloud-476ef",
-        storageBucket: "jrs-cloud-476ef.firebasestorage.app",
-        messagingSenderId: "322592273401",
-        appId: "1:322592273401:web:5661912525d04281380328",
-        measurementId: "G-SGNXLEHEWD"
+      apiKey: "AIzaSyDbWY8lrAmw0-Ao43SGuFqLt6ulP1Vxr1U",
+      authDomain: "jrs-cloud-476ef.firebaseapp.com",
+      projectId: "jrs-cloud-476ef",
+      storageBucket: "jrs-cloud-476ef.firebasestorage.app",
+      messagingSenderId: "322592273401",
+      appId: "1:322592273401:web:5661912525d04281380328",
+      measurementId: "G-SGNXLEHEWD"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
+    window.db = db;
+    window.auth = auth;
+    window.FirebaseAuth = { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut };
+    window.FirestoreFuncs = { collection, doc, setDoc, getDocs, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy };
+  </script>
 
-    const loginSection = document.getElementById('login-section');
-    const dashboardSection = document.getElementById('dashboard-section');
-    const userInfo = document.getElementById('user-info');
-    const dataDisplay = document.getElementById('data-display');
+  <!-- Main App Container -->
+  <div id="app" class="min-h-screen flex flex-col"></div>
 
-    // --- Authentication Logic ---
-
-    // Google Login
-    document.getElementById('google-login').onclick = () => {
-        signInWithPopup(auth, provider).catch(error => console.error(error));
+  <script type="module">
+    // ----- Global State -----
+    const AppState = {
+      user: null,
+      contacts: [],
+      categories: ['Our Village', 'Office'],
+      sections: {
+        'Office': ['Cutting', 'Sewing', 'Finishing', 'Packing']
+      },
+      selectedCategory: 'All',
+      selectedSection: 'All',
+      searchQuery: '',
+      editingContact: null,
+      showAddModal: false,
+      showImportModal: false,
+      currentView: 'dashboard' // 'dashboard' or 'contacts'
     };
 
-    // Logout
-    document.getElementById('logout-btn').onclick = () => {
-        signOut(auth);
-    };
+    const { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } = window.FirebaseAuth;
+    const { collection, doc, setDoc, getDocs, query, where, updateDoc, deleteDoc, writeBatch, serverTimestamp, onSnapshot, orderBy } = window.FirestoreFuncs;
+    const db = window.db;
+    const auth = window.auth;
 
-    // Auth State Observer
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            loginSection.classList.add('hidden');
-            dashboardSection.classList.remove('hidden');
-            userInfo.innerText = `হ্যালো, ${user.displayName}`;
-            loadData(user.uid);
-        } else {
-            loginSection.classList.remove('hidden');
-            dashboardSection.classList.add('hidden');
-        }
-    });
-
-    // --- Firestore Data Logic ---
-
-    // Save Data
-    document.getElementById('save-data').onclick = async () => {
-        const name = document.getElementById('data-name').value;
-        const session = document.getElementById('data-session').value;
-        const user = auth.currentUser;
-
-        if (name && session && user) {
-            try {
-                await addDoc(collection(db, "users", user.uid, "user_data"), {
-                    name: name,
-                    session: session,
-                    createdAt: serverTimestamp()
-                });
-                document.getElementById('data-name').value = '';
-                document.getElementById('data-session').value = '';
-            } catch (e) {
-                alert("ডেটা সেভ করতে সমস্যা হয়েছে!");
-            }
-        } else {
-            alert("সবগুলো ঘর পূরণ করুন।");
-        }
-    };
-
-    // Load Data
-    function loadData(uid) {
-        const q = query(collection(db, "users", uid, "user_data"), orderBy("createdAt", "desc"));
-        onSnapshot(q, (snapshot) => {
-            dataDisplay.innerHTML = '<h4>আপনার সেভ করা লিস্ট:</h4>';
-            snapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                const div = document.createElement('div');
-                div.className = 'data-item';
-                div.innerHTML = `
-                    <span><strong>${data.name}</strong> (${data.session})</span>
-                    <button class="delete-btn" onclick="deleteEntry('${uid}', '${docSnap.id}')">Delete</button>
-                `;
-                dataDisplay.appendChild(div);
-            });
-        });
+    // ----- Helper Functions -----
+    function renderApp() {
+      const appEl = document.getElementById('app');
+      if (!AppState.user) {
+        appEl.innerHTML = AuthUI();
+        attachAuthListeners();
+      } else {
+        appEl.innerHTML = DashboardUI();
+        attachDashboardListeners();
+        loadContacts();
+        loadUserCategories();
+      }
     }
 
-    // Delete Data (Global scope for button access)
-    window.deleteEntry = async (uid, docId) => {
-        if(confirm("আপনি কি এটি ডিলিট করতে চান?")) {
-            await deleteDoc(doc(db, "users", uid, "user_data", docId));
+    // ----- Auth UI -----
+    function AuthUI() {
+      return `
+        <div class="flex items-center justify-center min-h-screen p-4">
+          <div class="glass w-full max-w-md p-8 space-y-6">
+            <div class="text-center">
+              <div class="text-4xl mb-3">☁️</div>
+              <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-300 to-purple-300 bg-clip-text text-transparent">JRS Cloud Directory</h1>
+              <p class="text-slate-400 mt-2 text-sm">Smart Contact Management</p>
+            </div>
+            <div id="auth-form" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1">ইমেইল</label>
+                <input type="email" id="auth-email" class="glass-input w-full" placeholder="your@email.com">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1">পাসওয়ার্ড</label>
+                <input type="password" id="auth-password" class="glass-input w-full" placeholder="********">
+              </div>
+              <div id="auth-error" class="text-red-400 text-sm hidden"></div>
+              <button id="btn-login" class="btn-glass w-full bg-indigo-600/60 hover:bg-indigo-500/70 border-indigo-400/40">লগইন</button>
+              <button id="btn-signup" class="btn-glass w-full bg-purple-600/40 hover:bg-purple-500/50 border-purple-400/40">নতুন অ্যাকাউন্ট খুলুন</button>
+            </div>
+            <p class="text-xs text-slate-500 text-center">🔒 আপনার ডেটা সম্পূর্ণ সুরক্ষিত এবং ব্যক্তিগত</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function attachAuthListeners() {
+      const email = document.getElementById('auth-email');
+      const password = document.getElementById('auth-password');
+      const errorEl = document.getElementById('auth-error');
+      document.getElementById('btn-login').onclick = async () => {
+        try {
+          errorEl.classList.add('hidden');
+          await signInWithEmailAndPassword(auth, email.value, password.value);
+        } catch (e) {
+          errorEl.textContent = e.message.replace('Firebase: ', '');
+          errorEl.classList.remove('hidden');
         }
-    };
+      };
+      document.getElementById('btn-signup').onclick = async () => {
+        try {
+          errorEl.classList.add('hidden');
+          await createUserWithEmailAndPassword(auth, email.value, password.value);
+        } catch (e) {
+          errorEl.textContent = e.message.replace('Firebase: ', '');
+          errorEl.classList.remove('hidden');
+        }
+      };
+    }
 
-</script>
+    // ----- Dashboard UI -----
+    function DashboardUI() {
+      const user = AppState.user;
+      return `
+        <div class="flex flex-col min-h-screen">
+          <!-- Header -->
+          <header class="glass mx-4 mt-4 px-5 py-3 flex items-center justify-between flex-wrap gap-3">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">☁️</span>
+              <h1 class="text-xl font-bold text-white tracking-tight">JRS Directory</h1>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-sm text-slate-400 hidden sm:inline">👤 ${user.email}</span>
+              <button id="btn-logout" class="text-sm btn-glass py-2 px-4 border-red-400/30 hover:bg-red-500/20">লগআউট</button>
+            </div>
+          </header>
 
+          <!-- Quick Stats -->
+          <div class="px-4 mt-4 grid grid-cols-2 md:grid-cols-4 gap-3" id="stats-cards">
+            <div class="glass-card p-4 text-center"><p class="text-2xl font-bold" id="stat-total">0</p><p class="text-xs text-slate-400">মোট কন্টাক্ট</p></div>
+            <div class="glass-card p-4 text-center"><p class="text-2xl font-bold" id="stat-village">0</p><p class="text-xs text-slate-400">আমাদের গ্রাম</p></div>
+            <div class="glass-card p-4 text-center"><p class="text-2xl font-bold" id="stat-office">0</p><p class="text-xs text-slate-400">অফিস</p></div>
+            <div class="glass-card p-4 text-center"><p class="text-2xl font-bold" id="stat-sections">0</p><p class="text-xs text-slate-400">সেকশন</p></div>
+          </div>
+
+          <!-- Actions Bar -->
+          <div class="px-4 mt-4 flex flex-wrap gap-3">
+            <button id="btn-add-contact" class="btn-glass bg-indigo-600/50 hover:bg-indigo-500/60 border-indigo-400/50">➕ নতুন কন্টাক্ট</button>
+            <button id="btn-import-vcf" class="btn-glass bg-emerald-600/30 hover:bg-emerald-500/40 border-emerald-400/40">📥 VCF ইমপোর্ট</button>
+            <button id="btn-export-csv" class="btn-glass bg-amber-600/20 hover:bg-amber-500/30 border-amber-400/30">📤 CSV এক্সপোর্ট</button>
+          </div>
+
+          <!-- Search & Filter -->
+          <div class="px-4 mt-4 glass-card p-4 flex flex-wrap gap-3 items-center">
+            <div class="flex-1 min-w-[200px]">
+              <input type="text" id="search-input" class="glass-input w-full" placeholder="🔍 নাম বা ট্যাগ দিয়ে সার্চ...">
+            </div>
+            <select id="filter-category" class="glass-input bg-transparent text-white">
+              <option class="bg-slate-800" value="All">সকল ক্যাটাগরি</option>
+              ${AppState.categories.map(c => `<option class="bg-slate-800" value="${c}">${c}</option>`).join('')}
+            </select>
+            <select id="filter-section" class="glass-input bg-transparent text-white">
+              <option class="bg-slate-800" value="All">সকল সেকশন</option>
+            </select>
+          </div>
+
+          <!-- Contacts List -->
+          <div class="flex-1 px-4 mt-4 pb-8">
+            <div id="contacts-container" class="space-y-2 max-h-[60vh] overflow-y-auto scrollbar-thin pr-1">
+              <p class="text-slate-500 text-center py-8">কন্টাক্ট লোড হচ্ছে...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add/Edit Modal (hidden by default) -->
+        <div id="contact-modal" class="modal hidden">
+          <div class="glass w-full max-w-lg mx-4 p-6 max-h-[90vh] overflow-y-auto scrollbar-thin space-y-4">
+            <h2 class="text-xl font-bold" id="modal-title">নতুন কন্টাক্ট যোগ করুন</h2>
+            <input type="text" id="contact-name" class="glass-input w-full" placeholder="নাম *">
+            <input type="text" id="contact-phone" class="glass-input w-full" placeholder="ফোন নম্বর *">
+            <input type="text" id="contact-profession" class="glass-input w-full" placeholder="পেশা">
+            <input type="text" id="contact-address" class="glass-input w-full" placeholder="ঠিকানা / বাড়ি">
+            <select id="contact-category" class="glass-input w-full bg-transparent text-white">
+              ${AppState.categories.map(c => `<option class="bg-slate-800" value="${c}">${c}</option>`).join('')}
+            </select>
+            <select id="contact-section" class="glass-input w-full bg-transparent text-white">
+              <option class="bg-slate-800" value="">কোন সেকশন নেই</option>
+            </select>
+            <div>
+              <label class="text-sm text-slate-400">ট্যাগ (কমা দিয়ে আলাদা করুন)</label>
+              <input type="text" id="contact-tags" class="glass-input w-full" placeholder="#Manager, #F/A">
+            </div>
+            <div class="flex gap-3 pt-2">
+              <button id="btn-save-contact" class="btn-glass flex-1 bg-indigo-600/60 hover:bg-indigo-500/70">💾 সেভ করুন</button>
+              <button id="btn-cancel-modal" class="btn-glass flex-1 bg-slate-600/30 hover:bg-slate-500/40">বাতিল</button>
+            </div>
+            <div id="modal-error" class="text-red-400 text-sm hidden"></div>
+          </div>
+        </div>
+
+        <!-- Import VCF Modal -->
+        <div id="import-modal" class="modal hidden">
+          <div class="glass w-full max-w-md mx-4 p-6 space-y-4">
+            <h2 class="text-xl font-bold">📥 VCF ফাইল ইমপোর্ট</h2>
+            <input type="file" id="vcf-file-input" accept=".vcf,.vcard" class="glass-input w-full file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:bg-indigo-500/50 file:text-white">
+            <div id="import-status" class="text-sm text-slate-400"></div>
+            <button id="btn-import-vcf-confirm" class="btn-glass w-full bg-emerald-600/50 hover:bg-emerald-500/60">ইমপোর্ট করুন</button>
+            <button id="btn-cancel-import" class="btn-glass w-full bg-slate-600/30 hover:bg-slate-500/40">বন্ধ করুন</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // ----- Attach Dashboard Event Listeners -----
+    function attachDashboardListeners() {
+      document.getElementById('btn-logout').onclick = () => signOut(auth);
+
+      // Add contact modal
+      document.getElementById('btn-add-contact').onclick = () => openContactModal(null);
+      document.getElementById('btn-cancel-modal').onclick = closeContactModal;
+      document.getElementById('btn-save-contact').onclick = saveContact;
+
+      // Category change -> update sections dropdown
+      document.getElementById('contact-category').onchange = updateSectionDropdown;
+      document.getElementById('filter-category').onchange = (e) => {
+        AppState.selectedCategory = e.target.value;
+        updateFilterSections();
+        renderContactList();
+      };
+      document.getElementById('filter-section').onchange = (e) => {
+        AppState.selectedSection = e.target.value;
+        renderContactList();
+      };
+
+      // Search
+      document.getElementById('search-input').oninput = (e) => {
+        AppState.searchQuery = e.target.value.toLowerCase();
+        renderContactList();
+      };
+
+      // VCF Import
+      document.getElementById('btn-import-vcf').onclick = () => {
+        document.getElementById('import-modal').classList.remove('hidden');
+      };
+      document.getElementById('btn-cancel-import').onclick = () => {
+        document.getElementById('import-modal').classList.add('hidden');
+      };
+      document.getElementById('btn-import-vcf-confirm').onclick = handleVCFImport;
+
+      // CSV Export
+      document.getElementById('btn-export-csv').onclick = exportCSV;
+
+      updateFilterSections();
+      updateStats();
+    }
+
+    // ----- Update Section Dropdown for Contact Form -----
+    function updateSectionDropdown() {
+      const cat = document.getElementById('contact-category').value;
+      const secSelect = document.getElementById('contact-section');
+      secSelect.innerHTML = '<option class="bg-slate-800" value="">কোন সেকশন নেই</option>';
+      const sections = AppState.sections[cat] || [];
+      sections.forEach(s => {
+        secSelect.innerHTML += `<option class="bg-slate-800" value="${s}">${s}</option>`;
+      });
+    }
+
+    function updateFilterSections() {
+      const filterSec = document.getElementById('filter-section');
+      const cat = AppState.selectedCategory;
+      filterSec.innerHTML = '<option class="bg-slate-800" value="All">সকল সেকশন</option>';
+      if (cat !== 'All') {
+        const sections = AppState.sections[cat] || [];
+        sections.forEach(s => {
+          filterSec.innerHTML += `<option class="bg-slate-800" value="${s}">${s}</option>`;
+        });
+      }
+    }
+
+    // ----- Load Contacts from Firestore (real-time) -----
+    function loadContacts() {
+      const q = query(
+        collection(db, 'users', AppState.user.uid, 'contacts'),
+        orderBy('createdAt', 'desc')
+      );
+      onSnapshot(q, (snapshot) => {
+        AppState.contacts = [];
+        snapshot.forEach(docSnap => {
+          AppState.contacts.push({ id: docSnap.id, ...docSnap.data() });
+        });
+        renderContactList();
+        updateStats();
+      }, (error) => {
+        console.error("Contact load error:", error);
+        document.getElementById('contacts-container').innerHTML = '<p class="text-red-400 text-center py-8">ডেটা লোড করতে সমস্যা হয়েছে</p>';
+      });
+    }
+
+    function loadUserCategories() {
+      // Load custom categories & sections from user doc
+      const userDocRef = doc(db, 'users', AppState.user.uid);
+      onSnapshot(userDocRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data.categories) AppState.categories = data.categories;
+          if (data.sections) AppState.sections = data.sections;
+          // Re-render if dashboard is active
+          if (AppState.user) {
+            updateSectionDropdown();
+            updateFilterSections();
+          }
+        }
+      });
+    }
+
+    async function saveUserCategories() {
+      await setDoc(doc(db, 'users', AppState.user.uid), {
+        categories: AppState.categories,
+        sections: AppState.sections,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    }
+
+    // ----- Render Contact List -----
+    function renderContactList() {
+      const container = document.getElementById('contacts-container');
+      let filtered = AppState.contacts;
+
+      if (AppState.selectedCategory !== 'All') {
+        filtered = filtered.filter(c => c.category === AppState.selectedCategory);
+      }
+      if (AppState.selectedSection !== 'All') {
+        filtered = filtered.filter(c => c.section === AppState.selectedSection);
+      }
+      if (AppState.searchQuery) {
+        const q = AppState.searchQuery;
+        filtered = filtered.filter(c => {
+          const name = (c.name || '').toLowerCase();
+          const tags = (c.tags || []).join(' ').toLowerCase();
+          const phone = (c.phone || '').toLowerCase();
+          return name.includes(q) || tags.includes(q) || phone.includes(q);
+        });
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="text-center py-12 text-slate-500">
+          <p class="text-4xl mb-3">📇</p><p>কোন কন্টাক্ট পাওয়া যায়নি</p>
+        </div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(contact => {
+        const tagsHtml = (contact.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+        return `
+          <div class="glass-card p-4 contact-row flex flex-wrap justify-between items-center gap-3">
+            <div class="flex-1 min-w-[200px]">
+              <p class="font-semibold text-white">${escapeHtml(contact.name)}</p>
+              <p class="text-sm text-slate-400">📞 ${escapeHtml(contact.phone)} ${contact.profession ? '· ' + escapeHtml(contact.profession) : ''}</p>
+              <p class="text-xs text-slate-500">${contact.category || ''} ${contact.section ? '› ' + contact.section : ''} ${contact.address ? '· 📍 ' + escapeHtml(contact.address) : ''}</p>
+              <div class="mt-1">${tagsHtml}</div>
+            </div>
+            <div class="flex gap-2 flex-shrink-0">
+              <a href="tel:${escapeHtml(contact.phone)}" class="btn-glass p-2 text-sm" title="কল করুন">📞</a>
+              <a href="https://wa.me/${escapeHtml(contact.phone.replace(/[^0-9]/g,''))}" target="_blank" class="btn-glass p-2 text-sm bg-green-600/30" title="WhatsApp">💬</a>
+              <button data-id="${contact.id}" class="btn-edit btn-glass p-2 text-sm">✏️</button>
+              <button data-id="${contact.id}" class="btn-delete btn-glass p-2 text-sm border-red-400/30 hover:bg-red-500/20">🗑️</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Attach edit/delete listeners
+      container.querySelectorAll('.btn-edit').forEach(btn => {
+        btn.onclick = (e) => {
+          const id = e.currentTarget.dataset.id;
+          const contact = AppState.contacts.find(c => c.id === id);
+          if (contact) openContactModal(contact);
+        };
+      });
+      container.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.onclick = async (e) => {
+          const id = e.currentTarget.dataset.id;
+          if (confirm('আপনি কি নিশ্চিত এই কন্টাক্টটি ডিলিট করতে?')) {
+            await deleteDoc(doc(db, 'users', AppState.user.uid, 'contacts', id));
+          }
+        };
+      });
+    }
+
+    function updateStats() {
+      const total = AppState.contacts.length;
+      const village = AppState.contacts.filter(c => c.category === 'Our Village').length;
+      const office = AppState.contacts.filter(c => c.category === 'Office').length;
+      const sectionsSet = new Set(AppState.contacts.map(c => c.section).filter(Boolean));
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-village').textContent = village;
+      document.getElementById('stat-office').textContent = office;
+      document.getElementById('stat-sections').textContent = sectionsSet.size;
+    }
+
+    // ----- Open Contact Modal (Add/Edit) -----
+    function openContactModal(contact) {
+      AppState.editingContact = contact;
+      document.getElementById('contact-modal').classList.remove('hidden');
+      document.getElementById('modal-title').textContent = contact ? 'কন্টাক্ট এডিট করুন' : 'নতুন কন্টাক্ট যোগ করুন';
+      document.getElementById('contact-name').value = contact?.name || '';
+      document.getElementById('contact-phone').value = contact?.phone || '';
+      document.getElementById('contact-profession').value = contact?.profession || '';
+      document.getElementById('contact-address').value = contact?.address || '';
+      document.getElementById('contact-category').value = contact?.category || AppState.categories[0];
+      updateSectionDropdown();
+      document.getElementById('contact-section').value = contact?.section || '';
+      document.getElementById('contact-tags').value = (contact?.tags || []).join(', ');
+      document.getElementById('modal-error').classList.add('hidden');
+    }
+
+    function closeContactModal() {
+      document.getElementById('contact-modal').classList.add('hidden');
+      AppState.editingContact = null;
+    }
+
+    async function saveContact() {
+      const name = document.getElementById('contact-name').value.trim();
+      const phone = document.getElementById('contact-phone').value.trim();
+      if (!name || !phone) {
+        document.getElementById('modal-error').textContent = 'নাম ও ফোন নম্বর আবশ্যক';
+        document.getElementById('modal-error').classList.remove('hidden');
+        return;
+      }
+      const profession = document.getElementById('contact-profession').value.trim();
+      const address = document.getElementById('contact-address').value.trim();
+      const category = document.getElementById('contact-category').value;
+      const section = document.getElementById('contact-section').value;
+      const tagsRaw = document.getElementById('contact-tags').value;
+      const tags = tagsRaw.split(',').map(t => t.trim()).filter(t => t.length > 0);
+
+      const contactData = {
+        name, phone, profession, address, category, section: section || null, tags,
+        updatedAt: serverTimestamp()
+      };
+
+      try {
+        if (AppState.editingContact) {
+          await updateDoc(doc(db, 'users', AppState.user.uid, 'contacts', AppState.editingContact.id), contactData);
+        } else {
+          contactData.createdAt = serverTimestamp();
+          await setDoc(doc(collection(db, 'users', AppState.user.uid, 'contacts')), contactData);
+        }
+        closeContactModal();
+      } catch (e) {
+        document.getElementById('modal-error').textContent = 'সেভ করতে সমস্যা: ' + e.message;
+        document.getElementById('modal-error').classList.remove('hidden');
+      }
+    }
+
+    // ----- VCF Import Handler -----
+    async function handleVCFImport() {
+      const fileInput = document.getElementById('vcf-file-input');
+      const statusEl = document.getElementById('import-status');
+      if (!fileInput.files || fileInput.files.length === 0) {
+        statusEl.textContent = '⚠️ একটি VCF ফাইল সিলেক্ট করুন';
+        return;
+      }
+      const file = fileInput.files[0];
+      const text = await file.text();
+      const vcards = text.split('END:VCARD').filter(block => block.trim().length > 0).map(b => b + 'END:VCARD');
+
+      let imported = 0;
+      const batch = writeBatch(db);
+      const contactsRef = collection(db, 'users', AppState.user.uid, 'contacts');
+
+      for (const vcard of vcards) {
+        const nameMatch = vcard.match(/FN:(.*)/);
+        const telMatch = vcard.match(/TEL[^:]*:(.*)/);
+        if (nameMatch && telMatch) {
+          const name = nameMatch[1].trim();
+          const phone = telMatch[1].trim().replace(/[\s\-\(\)]/g, '');
+          const newDoc = doc(contactsRef);
+          batch.set(newDoc, {
+            name, phone,
+            profession: '', address: '',
+            category: 'Our Village', section: null, tags: [],
+            createdAt: serverTimestamp(), updatedAt: serverTimestamp()
+          });
+          imported++;
+        }
+      }
+
+      if (imported > 0) {
+        await batch.commit();
+        statusEl.textContent = `✅ ${imported} টি কন্টাক্ট সফলভাবে ইমপোর্ট হয়েছে!`;
+      } else {
+        statusEl.textContent = '❌ কোন বৈধ কন্টাক্ট পাওয়া যায়নি';
+      }
+    }
+
+    // ----- CSV Export -----
+    function exportCSV() {
+      let csv = 'Name,Phone,Profession,Address,Category,Section,Tags\n';
+      AppState.contacts.forEach(c => {
+        csv += `"${c.name}","${c.phone}","${c.profession || ''}","${c.address || ''}","${c.category || ''}","${c.section || ''}","${(c.tags||[]).join(';')}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'contacts_export.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text).replace(/[&<>"]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        if (m === '"') return '&quot;';
+        return m;
+      });
+    }
+
+    // ----- Auth State -----
+    onAuthStateChanged(auth, (user) => {
+      AppState.user = user;
+      renderApp();
+    });
+
+    // Initial render
+    renderApp();
+  </script>
 </body>
 </html>
